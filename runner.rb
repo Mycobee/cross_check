@@ -11,5 +11,5 @@ locations = {
 }
 
 stat_tracker = StatTracker.from_csv(locations)
-
+stat_tracker.load_csv
 require 'pry'; binding.pry
