@@ -2,21 +2,13 @@ require './test/test_helper'
 require './lib/stat_tracker'
 
 class TrackerTest < Minitest::Test
-
   def setup
     @locations = {
-      games: 'game_path',
-      teams: 'team_path',
-      game_teams: 'game_teams_path'
-      }
-
+      games: './data/mocks/mock_game.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv'
+    }
     @stat_tracker = StatTracker.new(@locations)
-
-    @teams = {team_id: 1, franchiseId:,"shortName","teamName","abbreviation","link"}
-
-    @games
-
-    @game_teams
   end
 
   def test_it_exists
@@ -30,9 +22,13 @@ class TrackerTest < Minitest::Test
   end
 
   def test_it_imports_csv_files
+    new_stat_tracker = StatTracker.from_csv(@locations)
+    new_stat_tracker.load_csv
 
-    assert_equal ,  @stat_tracker.from_csv
+    @locations.keys.each do |type|
+      state_value = new_stat_tracker.instance_variable_get("@#{type}")
+      assert_instance_of CSV, state_value
+    end
   end
-
 
 end
