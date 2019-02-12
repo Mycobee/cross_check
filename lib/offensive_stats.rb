@@ -12,7 +12,8 @@ module OffensiveStats
           next
         end
       end
-      teams_hash.delete(team.short_name) if teams_hash[team.short_name].count == 0
+      goals_count = teams_hash[team.short_name].count
+      teams_hash.delete(team.short_name) if goals_count.zero?
       teams_hash
     end
   end

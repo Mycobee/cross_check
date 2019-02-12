@@ -36,6 +36,12 @@ class TrackerTest < Minitest::Test
     assert_instance_of League, @stat_tracker.league
   end
 
+  def test_it_provides_number_of_teams_in_league
+    @stat_tracker.load_csv
+    actual = @stat_tracker.count_of_teams
+    assert_equal 33, actual
+  end
+
   def test_it_provides_overview_of_each_teams_total_goals
     @stat_tracker.load_csv
     expected = {
@@ -67,10 +73,35 @@ class TrackerTest < Minitest::Test
     assert_equal "Pittsburgh", actual
   end
 
+  def test_it_provides_an_overview_of_each_teams_forfeited_goals
+    @stat_tracker.load_csv
+    expected = {
+      "Los Angeles"=>[2, 2, 0, 3, 2, 1], 
+      "Boston"=>[2, 2, 1, 4, 1, 0, 1, 1, 0], 
+      "NY Rangers"=>[3, 5, 2, 3, 3], 
+      "Pittsburgh"=>[3, 6, 2, 1], 
+      "Detroit"=>[4, 1, 1, 0, 4, 4, 2, 3], 
+      "Chicago"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1], 
+      "Ottawa"=>[2, 3, 1, 2, 1], 
+      "Montreal"=>[4, 1, 6, 3, 6], 
+      "Minnesota"=>[2, 5, 2, 3, 5], 
+      "St Louis"=>[1, 1, 1, 4, 3, 2], 
+      "Anaheim"=>[1]
+    }
+    actual = @stat_tracker.total_goals_forfeited_by_team
+    assert_equal expected, actual
+  end
+
   def test_it_shows_best_defensive_team
     @stat_tracker.load_csv
     actual = @stat_tracker.best_defense
-    assert_equal "", actual
+    assert_equal "Anaheim", actual
+  end
+
+  def test_it_shows_worst_defensive_team
+    @stat_tracker.load_csv
+    actual = @stat_tracker.worst_defense
+    assert_equal "Montreal", actual
   end
 
 end
