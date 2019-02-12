@@ -8,6 +8,7 @@ class TrackerTest < Minitest::Test
       teams: './data/mocks/mock_team_info.csv',
     }
     @stat_tracker = StatTracker.new(@locations)
+    @stat_tracker.load_csv
   end
 
   def test_it_exists
@@ -31,19 +32,16 @@ class TrackerTest < Minitest::Test
   end
 
   def test_it_can_create_a_league
-    @stat_tracker.load_csv
     @stat_tracker.create_league
     assert_instance_of League, @stat_tracker.league
   end
 
   def test_it_provides_number_of_teams_in_league
-    @stat_tracker.load_csv
     actual = @stat_tracker.count_of_teams
     assert_equal 33, actual
   end
 
   def test_it_provides_overview_of_each_teams_total_goals
-    @stat_tracker.load_csv
     expected = {
       "Los Angeles"=>[1, 1, 1, 4, 3, 2],
       "Boston"=>[3, 5, 2, 3, 3, 3, 6, 2, 1],
@@ -62,19 +60,16 @@ class TrackerTest < Minitest::Test
   end
 
   def test_it_provides_best_offensive_team
-    @stat_tracker.load_csv
     actual = @stat_tracker.best_offense
     assert_equal "Ottawa", actual
   end
 
   def test_it_provides_worst_offensive_team
-    @stat_tracker.load_csv
     actual = @stat_tracker.worst_offense
     assert_equal "Pittsburgh", actual
   end
 
   def test_it_provides_an_overview_of_each_teams_forfeited_goals
-    @stat_tracker.load_csv
     expected = {
       "Los Angeles"=>[2, 2, 0, 3, 2, 1], 
       "Boston"=>[2, 2, 1, 4, 1, 0, 1, 1, 0], 
@@ -93,15 +88,22 @@ class TrackerTest < Minitest::Test
   end
 
   def test_it_shows_best_defensive_team
-    @stat_tracker.load_csv
     actual = @stat_tracker.best_defense
     assert_equal "Anaheim", actual
   end
 
   def test_it_shows_worst_defensive_team
-    @stat_tracker.load_csv
     actual = @stat_tracker.worst_defense
     assert_equal "Montreal", actual
   end
 
+  def test_highest_scoring_visitor
+    actual = @stat_tracker.highest_scoring_visitor
+    assert_equal "Ottawa", actual
+  end
+
+  def test_highest_scoring_home_team
+    actual = @stat_tracker.highest_scoring_home_team
+    assert_equal "", actual
+  end
 end
