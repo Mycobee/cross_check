@@ -17,4 +17,26 @@ module OffensiveStats
       teams_hash
     end
   end
+
+  def total_goals_when_visiting
+    @league.teams.inject({}) do |teams_hash, team|
+      visitor_games = @league.games.select do |game| 
+        team.team_id == game.away_team_id
+      end
+      visitor_goals = visitor_games.map { |game| game.away_goals }
+      teams_hash[team.short_name] = visitor_goals if !visitor_goals.count.zero?
+      teams_hash
+    end
+  end
+
+  def total_goals_when_at_home
+    @league.teams.inject({}) do |teams_hash, team|
+      home_games = @league.games.select do |game|
+        game.home_team_id == team.team_id
+      end
+      home_goals = home_games.map { |game| game.home_goals }
+      teams_hash[team.short_name] = home_goals if !home_goals.count.zero?
+      teams_hash
+    end
+  end
 end
