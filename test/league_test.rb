@@ -5,12 +5,12 @@ require './lib/league'
 class LeagueTest < Minitest::Test
   include MockData
   def setup
-    @data_set = StatTracker.from_csv({
+    data_set = StatTracker.from_csv({
       games: './data/mocks/mock_game.csv',
       teams: './data/mocks/mock_team_info.csv'
     })
-    @data_set.load_csv
-    @league = League.new(@data_set.games, @data_set.teams)
+    data_set.load_csv
+    @league = data_set.league
   end
 
   def test_it_exists
@@ -18,10 +18,14 @@ class LeagueTest < Minitest::Test
   end
 
   def test_it_initializes_with_games
-    assert_instance_of Games, @league.games
+    @league.games.each do |game|
+      assert_instance_of Game, game
+    end
   end
 
   def test_it_initializes_with_teams
-    assert_instance_of TeamsInfo, @league.teams
+    @league.teams.each do |team|
+      assert_instance_of Team, team
+    end
   end
 end
