@@ -1,4 +1,4 @@
-module MockAssertions
+module MockData
   def mock_game
     {
       game_id: "2012030221",
@@ -16,6 +16,17 @@ module MockAssertions
       venue_time_zone_id: "America/New_York",
       venue_time_zone_offset: "-4",
       venue_time_zone_tz: "EDT"
+    }
+  end
+
+  def mock_team
+    {
+      team_id: "1",
+      franchise_id: "23",
+      short_name: "New Jersey",
+      team_name: "Devils",
+      abbreviation: "NJD",
+      link: "/api/v1/teams/1"
     }
   end
 end
