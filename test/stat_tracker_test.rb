@@ -43,17 +43,17 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_overview_of_each_teams_total_goals
     expected = {
-      "Los Angeles"=>[1, 1, 1, 4, 3, 2],
-      "Boston"=>[3, 5, 2, 3, 3, 3, 6, 2, 1],
-      "NY Rangers"=>[2, 2, 1, 4, 1], 
-      "Pittsburgh"=>[0, 1, 1, 0], 
-      "Detroit"=>[1, 4, 3, 2, 1, 3, 1, 1], 
-      "Chicago"=>[4, 1, 1, 0, 4, 4, 2, 2, 5, 2, 3, 5], 
-      "Ottawa"=>[4, 1, 6, 3, 6], 
-      "Montreal"=>[2, 3, 1, 2, 1], 
-      "Minnesota"=>[1, 2, 3, 0, 1], 
-      "St Louis"=>[2, 2, 0, 3, 2, 1], 
-      "Anaheim"=>[3]
+      "Kings"=>[1, 1, 1, 4, 3, 2],
+      "Bruins"=>[3, 5, 2, 3, 3, 3, 6, 2, 1],
+      "Rangers"=>[2, 2, 1, 4, 1], 
+      "Penguins"=>[0, 1, 1, 0], 
+      "Red Wings"=>[1, 4, 3, 2, 1, 3, 1, 1, 0], 
+      "Blackhawks"=>[4, 1, 1, 0, 4, 4, 2, 2, 5, 2, 3, 5], 
+      "Senators"=>[4, 1, 6, 3, 6], 
+      "Canadiens"=>[2, 3, 1, 2, 1], 
+      "Wild"=>[1, 2, 3, 0, 1], 
+      "Blues"=>[2, 2, 0, 3, 2, 1], 
+      "Ducks"=>[3, 4]
     }
     actual = @stat_tracker.total_goals_made_by_team
     assert_equal expected, actual
@@ -61,27 +61,27 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_best_offensive_team
     actual = @stat_tracker.best_offense
-    assert_equal "Ottawa", actual
+    assert_equal "Senators", actual
   end
 
   def test_it_provides_worst_offensive_team
     actual = @stat_tracker.worst_offense
-    assert_equal "Pittsburgh", actual
+    assert_equal "Penguins", actual
   end
 
   def test_it_provides_an_overview_of_each_teams_forfeited_goals
     expected = {
-      "Los Angeles"=>[2, 2, 0, 3, 2, 1], 
-      "Boston"=>[2, 2, 1, 4, 1, 0, 1, 1, 0], 
-      "NY Rangers"=>[3, 5, 2, 3, 3], 
-      "Pittsburgh"=>[3, 6, 2, 1], 
-      "Detroit"=>[4, 1, 1, 0, 4, 4, 2, 3], 
-      "Chicago"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1], 
-      "Ottawa"=>[2, 3, 1, 2, 1], 
-      "Montreal"=>[4, 1, 6, 3, 6], 
-      "Minnesota"=>[2, 5, 2, 3, 5], 
-      "St Louis"=>[1, 1, 1, 4, 3, 2], 
-      "Anaheim"=>[1]
+      "Kings"=>[2, 2, 0, 3, 2, 1], 
+      "Bruins"=>[2, 2, 1, 4, 1, 0, 1, 1, 0], 
+      "Rangers"=>[3, 5, 2, 3, 3], 
+      "Penguins"=>[3, 6, 2, 1], 
+      "Red Wings"=>[4, 1, 1, 0, 4, 4, 2, 3, 4], 
+      "Blackhawks"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1], 
+      "Senators"=>[2, 3, 1, 2, 1], 
+      "Canadiens"=>[4, 1, 6, 3, 6], 
+      "Wild"=>[2, 5, 2, 3, 5], 
+      "Blues"=>[1, 1, 1, 4, 3, 2], 
+      "Ducks"=>[1, 0]
     }
     actual = @stat_tracker.total_goals_forfeited_by_team
     assert_equal expected, actual
@@ -89,21 +89,47 @@ class TrackerTest < Minitest::Test
 
   def test_it_shows_best_defensive_team
     actual = @stat_tracker.best_defense
-    assert_equal "Anaheim", actual
+    assert_equal "Ducks", actual
   end
 
   def test_it_shows_worst_defensive_team
     actual = @stat_tracker.worst_defense
-    assert_equal "Montreal", actual
+    assert_equal "Canadiens", actual
   end
 
   def test_highest_scoring_visitor
     actual = @stat_tracker.highest_scoring_visitor
-    assert_equal "Ottawa", actual
+    assert_equal "Ducks", actual
   end
 
   def test_highest_scoring_home_team
     actual = @stat_tracker.highest_scoring_home_team
-    assert_equal "", actual
+    assert_equal "Senators", actual
   end
+
+  def test_lowest_scoring_visitor
+    actual = @stat_tracker.lowest_scoring_visitor
+    assert_equal "Penguins", actual
+  end
+
+  def test_lowest_scoring_home_team
+    actual = @stat_tracker.lowest_scoring_home_team
+    assert_equal "Penguins", actual
+  end
+
+  def test_winningest_team
+    actual = @stat_tracker.winningest_team
+    assert_equal "Ducks", actual
+  end
+
+  def test_best_fans
+    actual = @stat_tracker.best_fans
+    assert_equal "Kings", actual
+  end
+
+  def test_worst_fans
+    actual = @stat_tracker.worst_fans
+    assert_equal "Penguins", actual
+  end
+
 end

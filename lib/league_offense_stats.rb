@@ -1,6 +1,6 @@
 module LeagueOffenseStats
   def total_goals_made_by_team
-    @league.teams.inject({}) do |teams_hash, team|
+   @league.teams.inject({}) do |teams_hash, team|
       teams_hash[team.team_name] = []
       @league.games.each do |game| 
         team_goals = teams_hash[team.team_name]
@@ -12,6 +12,9 @@ module LeagueOffenseStats
           next
         end
       end
+      if teams_hash[team.team_name].count.zero?
+        teams_hash.delete(team.team_name)
+      end
       teams_hash
     end
   end
@@ -21,8 +24,8 @@ module LeagueOffenseStats
       visitor_games = @league.games.select do |game| 
         team.team_id == game.away_team_id
       end
-      gamevisitor_games.map {||}
-      teams_hash[team.team_name] = visitor_games
+      visitor_goals = visitor_games.map {|game| game.away_goals}
+      teams_hash[team.team_name] = visitor_goals if !visitor_goals.count.zero?
       teams_hash
     end
   end
@@ -32,7 +35,8 @@ module LeagueOffenseStats
       home_games = @league.games.select do |game|
         game.home_team_id == team.team_id
       end
-      teams_hash[team.team_name] = home_games
+      home_goals = home_games.map {|game| game.home_goals}
+      teams_hash[team.team_name] = home_goals if !home_goals.count.zero?
       teams_hash
     end
   end
