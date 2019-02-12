@@ -1,11 +1,10 @@
 require './test/test_helper'
 require './lib/stat_tracker'
-require 'csv'
 require './lib/game'
-require './data/mocks/mock_assertions'
+require './data/mocks/mock_data'
 
 class GameTest < Minitest::Test
-  include MockAssertions
+  include MockData
 
   def setup
     @data_set = StatTracker.from_csv({games: './data/mocks/mock_game.csv'})
