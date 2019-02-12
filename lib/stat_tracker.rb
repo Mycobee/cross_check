@@ -1,9 +1,9 @@
 require 'csv'
 
 class StatTracker
-  attr_reader :file_paths, 
-              :teams, 
-              :games, 
+  attr_reader :file_paths,
+              :teams,
+              :games,
               :game_teams
 
   def initialize(file_paths)
