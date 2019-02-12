@@ -1,10 +1,15 @@
 require 'csv'
+require './lib/league'
+require './lib/league_statistics'
+
 
 class StatTracker
+  include LeagueStatistics
+
   attr_reader :file_paths,
               :teams,
               :games,
-              :game_teams
+              :league
 
   def initialize(file_paths)
     @file_paths = file_paths
@@ -19,5 +24,10 @@ class StatTracker
       data_set = CSV.open(file_path, headers: true, header_converters: :symbol)
       instance_variable_set("@#{type}", data_set)
     end
+    create_league
+  end
+
+  def create_league
+    @league = League.new(@games, @teams)
   end
 end
