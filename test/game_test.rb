@@ -2,9 +2,10 @@ require './test/test_helper'
 require './lib/stat_tracker'
 require 'csv'
 require './lib/game'
+require './data/mocks/mock_assertions'
 
 class GameTest < Minitest::Test
-
+  include MockAssertions
 
   def setup
     @data_set = StatTracker.from_csv({games: './data/mocks/mock_game.csv'})
@@ -15,30 +16,13 @@ class GameTest < Minitest::Test
   end
 
   def test_it_exists
-
     assert_instance_of Game, @games.first
   end
 
   def test_it_has_attributes
-    instance_variables = [:game_id,
-    :season,
-    :type,
-    :date_time,
-    :away_team_id,
-    :home_team_id,
-    :away_goals,
-    :home_goals,
-    :outcome,
-    :home_rink_side_star,
-    :venue,
-    :venue_link,
-    :venue_time_zone_id,
-    :venue_time_zone_offset,
-    :venue_time_zone_tz]
-    instance_variables.each do |key|
-      value = @games.first.instance_variable_get("@#{key}")
-      assert_equal []
-    end
+    mock_game.each do |key, value|
+      actual = @games.first.instance_variable_get("@#{key}")
+      assert_equal value, actual
     end
   end
 end
