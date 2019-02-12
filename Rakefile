@@ -1,7 +1,6 @@
 require 'rake'
 require 'rake/testtask'
 
-
 task default: %w[test]
 
 Rake::TestTask.new do |t|
