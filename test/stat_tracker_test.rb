@@ -89,17 +89,17 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_overview_of_each_teams_total_goals
     expected = {
-      "Kings"=>[1, 1, 1, 4, 3, 2],
-      "Bruins"=>[3, 5, 2, 3, 3, 3, 6, 2, 1],
-      "Rangers"=>[2, 2, 1, 4, 1],
-      "Penguins"=>[0, 1, 1, 0],
-      "Red Wings"=>[1, 4, 3, 2, 1, 3, 1, 1, 0],
-      "Blackhawks"=>[4, 1, 1, 0, 4, 4, 2, 2, 5, 2, 3, 5],
-      "Senators"=>[4, 1, 6, 3, 6],
-      "Canadiens"=>[2, 3, 1, 2, 1],
-      "Wild"=>[1, 2, 3, 0, 1],
-      "Blues"=>[2, 2, 0, 3, 2, 1],
-      "Ducks"=>[3, 4]
+      "26"=>[1, 1, 1, 4, 3, 2], 
+      "6"=>[3, 5, 2, 3, 3, 3, 6, 2, 1], 
+      "3"=>[2, 2, 1, 4, 1], 
+      "5"=>[0, 1, 1, 0], 
+      "17"=>[1, 4, 3, 2, 1, 3, 1, 1, 0], 
+      "16"=>[4, 1, 1, 0, 4, 4, 2, 2, 5, 2, 3, 5], 
+      "9"=>[4, 1, 6, 3, 6], 
+      "8"=>[2, 3, 1, 2, 1], 
+      "30"=>[1, 2, 3, 0, 1], 
+      "19"=>[2, 2, 0, 3, 2, 1], 
+      "24"=>[3, 4]
     }
     actual = @stat_tracker.total_goals_made_by_team
     assert_equal expected, actual
@@ -117,17 +117,17 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_an_overview_of_each_teams_forfeited_goals
     expected = {
-      "Kings"=>[2, 2, 0, 3, 2, 1],
-      "Bruins"=>[2, 2, 1, 4, 1, 0, 1, 1, 0],
-      "Rangers"=>[3, 5, 2, 3, 3],
-      "Penguins"=>[3, 6, 2, 1],
-      "Red Wings"=>[4, 1, 1, 0, 4, 4, 2, 3, 4],
-      "Blackhawks"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1],
-      "Senators"=>[2, 3, 1, 2, 1],
-      "Canadiens"=>[4, 1, 6, 3, 6],
-      "Wild"=>[2, 5, 2, 3, 5],
-      "Blues"=>[1, 1, 1, 4, 3, 2],
-      "Ducks"=>[1, 0]
+      "26"=>[2, 2, 0, 3, 2, 1], 
+      "6"=>[2, 2, 1, 4, 1, 0, 1, 1, 0], 
+      "3"=>[3, 5, 2, 3, 3], 
+      "5"=>[3, 6, 2, 1], 
+      "17"=>[4, 1, 1, 0, 4, 4, 2, 3, 4], 
+      "16"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1], 
+      "9"=>[2, 3, 1, 2, 1], 
+      "8"=>[4, 1, 6, 3, 6], 
+      "30"=>[2, 5, 2, 3, 5], 
+      "19"=>[1, 1, 1, 4, 3, 2], 
+      "24"=>[1, 0]
     }
     actual = @stat_tracker.total_goals_forfeited_by_team
     assert_equal expected, actual
@@ -175,8 +175,7 @@ class TrackerTest < Minitest::Test
 
   def test_worst_fans
     actual = @stat_tracker.worst_fans
-    assert_equal "Penguins", actual
+    assert_equal [], actual
   end
-  ########################################
-
+  ###########################################
 end
