@@ -6,9 +6,9 @@ class TrackerTest < Minitest::Test
     @locations = {
       games: './data/mocks/mock_game.csv',
       teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
     }
-    @stat_tracker = StatTracker.new(@locations)
-    @stat_tracker.load_csv
+    @stat_tracker = StatTracker.from_csv(@locations)
   end
 
   def test_it_exists
@@ -19,16 +19,6 @@ class TrackerTest < Minitest::Test
    new_stat_tracker = StatTracker.from_csv(@locations)
    assert_instance_of StatTracker, new_stat_tracker
    assert_equal @locations, new_stat_tracker.file_paths
-  end
-
-  def test_it_imports_csv_files
-    new_stat_tracker = StatTracker.from_csv(@locations)
-    new_stat_tracker.load_csv
-
-    @locations.keys.each do |type|
-      state_value = new_stat_tracker.instance_variable_get("@#{type}")
-      assert_instance_of CSV, state_value
-    end
   end
 
   def test_it_can_create_a_league
@@ -76,7 +66,8 @@ class TrackerTest < Minitest::Test
 
   def test_average_goals_by_season
     actual = @stat_tracker.average_goals_by_season
-    assert_equal 5, actual
+    expected  ={"20122013"=>4.53}
+    assert_equal expected, actual
   end
 ###########################################
 
@@ -89,17 +80,17 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_overview_of_each_teams_total_goals
     expected = {
-      "26"=>[1, 1, 1, 4, 3, 2], 
-      "6"=>[3, 5, 2, 3, 3, 3, 6, 2, 1], 
-      "3"=>[2, 2, 1, 4, 1], 
-      "5"=>[0, 1, 1, 0], 
-      "17"=>[1, 4, 3, 2, 1, 3, 1, 1, 0], 
-      "16"=>[4, 1, 1, 0, 4, 4, 2, 2, 5, 2, 3, 5], 
-      "9"=>[4, 1, 6, 3, 6], 
-      "8"=>[2, 3, 1, 2, 1], 
-      "30"=>[1, 2, 3, 0, 1], 
-      "19"=>[2, 2, 0, 3, 2, 1], 
-      "24"=>[3, 4]
+      "26"=>[1, 1, 3, 1, 4, 2], 
+      "6"=>[2, 3, 3, 6, 3, 5, 3, 2, 1], 
+      "3"=>[2, 2, 1, 1, 4], 
+      "5"=>[1, 0, 0, 1], 
+      "17"=>[1, 4, 1, 1, 1, 3, 2, 3, 0], 
+      "16"=>[1, 0, 4, 2, 3, 4, 1, 4, 2, 2, 5, 5], 
+      "9"=>[4, 1, 6, 6, 3], 
+      "8"=>[1, 2, 2, 3, 1], 
+      "30"=>[1, 2, 1, 3, 0], 
+      "19"=>[0, 3, 1, 2, 2, 2], 
+      "24"=>[4, 3]
     }
     actual = @stat_tracker.total_goals_made_by_team
     assert_equal expected, actual
