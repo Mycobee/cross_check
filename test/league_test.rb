@@ -4,12 +4,13 @@ require './lib/league'
 
 class LeagueTest < Minitest::Test
   include MockData
+
   def setup
     data_set = StatTracker.from_csv({
       games: './data/mocks/mock_game.csv',
-      teams: './data/mocks/mock_team_info.csv'
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv'   
     })
-    data_set.load_csv
     @league = data_set.league
   end
 

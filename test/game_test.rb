@@ -7,12 +7,7 @@ class GameTest < Minitest::Test
   include MockData
 
   def setup
-    data_set = StatTracker.from_csv({
-      games: './data/mocks/mock_game.csv',
-      teams: './data/mocks/mock_team_info.csv'
-    })
-    data_set.load_csv
-    @game = data_set.league.games.first
+    @game = Game.new(mock_game)
   end
 
   def test_it_exists

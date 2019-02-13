@@ -9,8 +9,6 @@ class StatTracker
   include GameStatistics
 
   attr_reader :file_paths,
-              :teams,
-              :games,
               :league
 
   def initialize(file_paths)
@@ -18,18 +16,22 @@ class StatTracker
   end
 
   def self.from_csv(files)
-    new(files)
+    stat_tracker = new(files)
+    stat_tracker.load_csv
+    stat_tracker
   end
 
   def load_csv
-    @file_paths.each do |type, file_path|
+    csv_files = []
+    @file_paths.each do |_, file_path|
       data_set = CSV.open(file_path, headers: true, header_converters: :symbol)
-      instance_variable_set("@#{type}", data_set)
+      csv_files << data_set
     end
-    create_league
+    create_league(*csv_files)
+    csv_files
   end
-
-  def create_league
-    @league = League.new(@games, @teams)
+  
+  def create_league(games, teams, team_games)
+    @league = League.new(games, teams, team_games)
   end
 end
