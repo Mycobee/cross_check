@@ -2,11 +2,13 @@ require 'csv'
 require './lib/league'
 require './lib/league_statistics'
 require './lib/game_statistics'
+require './lib/season_statistics'
 
 
 class StatTracker
   include LeagueStatistics
   include GameStatistics
+  include SeasonStatistics
 
   attr_reader :file_paths,
               :league
@@ -30,7 +32,7 @@ class StatTracker
     create_league(*csv_files)
     csv_files
   end
-  
+
   def create_league(games, teams, team_games)
     @league = League.new(games, teams, team_games)
   end
