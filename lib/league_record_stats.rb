@@ -31,10 +31,11 @@ module LeagueRecordStats
     @league.teams.inject({}) do |aggregate_record, team|
       home_win_loss = home_record(team.team_id)
       away_win_loss = away_record(team.team_id)
+      if !home_win_loss.length.zero? || !away_win_loss.length.zero?
+        aggregate_record[team.team_id] = {}
+      end
       if !home_win_loss.length.zero?
-        aggregate_record[team.team_id] = {
-          home: home_win_loss
-        }
+        aggregate_record[team.team_id][:home] = home_win_loss
       end
       if !away_win_loss.length.zero?
         aggregate_record[team.team_id][:away] = away_win_loss

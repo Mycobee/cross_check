@@ -12,7 +12,7 @@ module LeagueStatistics
   end
 
   def best_offense
-    team_goals = total_goals_made_by_team # from offensive_stats
+    team_goals = total_goals_made_by_team # from LeagueOffenseStats
     best_offensive_id = team_goals.keys.max_by do |team_id|
       goals_by_team = team_goals[team_id]
       (goals_by_team.sum / goals_by_team.count.to_f)
@@ -21,7 +21,7 @@ module LeagueStatistics
   end
 
   def worst_offense
-    team_goals = total_goals_made_by_team # from offensive_stats
+    team_goals = total_goals_made_by_team # from LeagueOffenseStats
     worst_offensive_id = team_goals.keys.min_by do |team_id|
       goals_by_team = team_goals[team_id]
       (goals_by_team.sum / goals_by_team.count.to_f)
@@ -30,7 +30,7 @@ module LeagueStatistics
   end
 
   def best_defense
-    team_goals_forfeited = total_goals_forfeited_by_team # from defensive_stats
+    team_goals_forfeited = total_goals_forfeited_by_team # from LeagueDefenseStats
     best_defensive_id = team_goals_forfeited.keys.min_by do |team_id|
       goals_forfeited = team_goals_forfeited[team_id]
       (goals_forfeited.sum / goals_forfeited.count.to_f)
@@ -39,7 +39,7 @@ module LeagueStatistics
   end
 
   def worst_defense
-    team_goals_forfeited = total_goals_forfeited_by_team # from defensive_stats
+    team_goals_forfeited = total_goals_forfeited_by_team # from LeagueDefenseStats
     worst_defensive_id = team_goals_forfeited.keys.max_by do |team_id|
       goals_forfeited = team_goals_forfeited[team_id]
       (goals_forfeited.sum / goals_forfeited.count.to_f)
@@ -48,7 +48,7 @@ module LeagueStatistics
   end
 
   def highest_scoring_visitor
-    team_visitor_goals = total_goals_when_visiting
+    team_visitor_goals = total_goals_when_visiting # from LeagueOffenseStats
     highest_scoring_id = team_visitor_goals.keys.max_by do |team_id|
       visitor_goals = team_visitor_goals[team_id]
       (visitor_goals.sum / visitor_goals.count.to_f)
@@ -57,7 +57,7 @@ module LeagueStatistics
   end
 
   def highest_scoring_home_team
-    team_home_goals = total_goals_when_at_home
+    team_home_goals = total_goals_when_at_home # from LeagueOffenseStats
     best_home_scoring_id = team_home_goals.keys.max_by do |team_id|
       home_goals = team_home_goals[team_id]
       (home_goals.sum / home_goals.count.to_f)
@@ -66,7 +66,7 @@ module LeagueStatistics
   end
 
   def lowest_scoring_visitor
-    team_visitor_goals = total_goals_when_visiting
+    team_visitor_goals = total_goals_when_visiting # from LeagueOffenseStats
     worst_visitor_scoring_id = team_visitor_goals.keys.min_by do |team_id|
       visitor_goals = team_visitor_goals[team_id]
       (visitor_goals.sum / visitor_goals.count.to_f)
@@ -75,7 +75,7 @@ module LeagueStatistics
   end
 
   def lowest_scoring_home_team
-    team_home_goals = total_goals_when_at_home
+    team_home_goals = total_goals_when_at_home #from LeagueOffenseStats
     worst_home_scoring_id = team_home_goals.keys.min_by do |team_id|
       home_goals = team_home_goals[team_id]
       (home_goals.sum / home_goals.count.to_f)
@@ -84,7 +84,7 @@ module LeagueStatistics
   end
 
   def winningest_team
-    win_loss_ratios = total_win_loss_records
+    win_loss_ratios = total_win_loss_records # from LeagueRecordStats
     winningest_id = win_loss_ratios.keys.max_by do |ratio|
       win_loss_tracker = win_loss_ratios[ratio]
       win_loss_tracker.sum / win_loss_tracker.count.to_f
@@ -93,7 +93,7 @@ module LeagueStatistics
   end
 
   def best_fans
-    all_records = win_loss_records_overview
+    all_records = win_loss_records_overview # from LeagueRecordStats
     best_fans_by_id = all_records.keys.max_by do |record|
       home_record = all_records[record][:home]
       away_record = all_records[record][:away]
@@ -105,7 +105,7 @@ module LeagueStatistics
   end
 
   def worst_fans
-    all_records = win_loss_records_overview
+    all_records = win_loss_records_overview # from LeagueRecordStats
     all_records.keys.select do |record|
       home_record = all_records[record][:home]
       away_record = all_records[record][:away]
