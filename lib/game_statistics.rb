@@ -52,6 +52,9 @@ module GameStatistics
       game.season
     end
     season_hash.each do |season, games|
-      season_hash[season] = games.average_goals_per_game #see line 45 
+      total_scores = season_hash[season].map {|game| game.away_goals + game.home_goals}
+      season_hash[season] = (total_scores.sum / total_scores.count.to_f).round(2)
+    end
+    season_hash
   end
 end
