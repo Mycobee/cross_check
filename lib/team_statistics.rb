@@ -23,16 +23,28 @@ module TeamStatistics
       game.home_team_id == team_id
       game.away_team_id == team_id
     end
+  end
 
-  def best_season(team_id)
-    season_hash = @league.games.group_by do |game|
-      game.season
-    end
-    season_hash.each do |season, games|
-      total_home_wins = season_hash[season].map {|game| game.home_team_id == team_id}
-      end
+  def home_games(team_id)
+    total_games.select do |game|
+      game.home_team_id == team_id
     end
   end
+
+  def away_games(team_id)
+    total_games.select do |game|
+      game.away_team_id == team_id
+    end
+  end
+
+  # def best_season(team_id)
+  #   season_hash = @league.games.group_by do |game|
+  #     game.season
+  #   end
+  #   season_hash.each do |season, games|
+  #     total_home_wins = season_hash[season].map {|game| game.home_team_id == team_id}
+  #   end
+  # end
 
   def worst_season(team_id)
   end
@@ -44,33 +56,40 @@ module TeamStatistics
     end
 
     total_games = all_games_played(team_id)
-    end
 
     team_wins.count.to_f / total_games.count
   end
 
   def most_goals_scored(team_id)
-    highest_score_game = 0
-    total_games = all_games_played(team_id)
-    home_games = total_games.select do |game|
-      game.home_team_id == team_id
+    highest_home_game = home_games(team_id).max_by do |game|
+      game.home_goals
     end
-    home_games.each do |game|
-      if game.home_goals > highest_score_game
-        highest_score_game = game.home_goals
-      end
+
+    highest_away_game = away_games(team_id).max_by do |game|
+      game.away_goals
     end
-    away_games = total_games.select do |game|
-      game.away_team_id == team_id
+
+    if highest_home_game > highest_away_game
+      highest_home_game
+    else highest_away_game
     end
-    away_games.each do |game|
-      if game.away_goals > highest_score_game
-        highest_score_game = game.away_goals
-      end
-    highest_score_game
+
+
   end
 
   def fewest_goals_scored(team_id)
+    lowest_home_game = home_games(team_id).min_by do |game|
+      game.home_goals
+    end
+
+    lowest_away_game = away_games(team_id).min_by do |game|
+      game.away_goals
+    end
+
+    if lowest_home_game < lowest_away_game
+      lowest_home_game
+    else lowest_away_game
+    end
   end
 
   def favorite_opponent(team_id)
