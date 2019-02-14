@@ -51,14 +51,28 @@ module TeamStatistics
     end
   end
 
-  # def best_season(team_id)
-  #   season_hash = @league.games.group_by do |game|
-  #     game.season
-  #   end
-  #   season_hash.each do |season, games|
-  #     total_home_wins = season_hash[season].map {|game| game.home_team_id == team_id}
-  #   end
-  # end
+  def best_season(team_id)
+    season_hash = @league.games.group_by do |game|
+      game.season
+    end
+    season_hash.each do |season, games|
+        home_away_win_loss_array = games.map do |game|
+        if game.home_team_id == team_id
+          game.outcome.include?("home") ? 1 : 0
+        end
+        if game.away_team_id == team_id
+          game.outcome.include?("away") ? 1 : 0
+        end
+      end
+      home_away_win_loss_array = home_away_win_loss_array.select {|score| score}
+      season_hash[season] = home_away_win_loss_array
+    end
+    season_result = {}
+    season_hash.each do |season, scores|
+      season_result[season] = scores.sum / scores.count
+    end
+    require 'pry'; binding.pry
+  end
 
   def worst_season(team_id)
   end
