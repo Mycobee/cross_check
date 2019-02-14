@@ -68,7 +68,8 @@ module SeasonRecordStats
     team_games_by_game_id = @league.team_games.group_by {|team_game| team_game.game_id}
     season_games = games_by_season.inject([]) do |games_arr, game|
       matching_games = team_games_by_game_id[game.game_id]
-      games_arr.concat(matching_games)
+      games_arr.concat(matching_games) if matching_games
+      games_arr
     end
     season_games.group_by {|season_game| season_game.team_id}
   end

@@ -16,7 +16,6 @@ module SeasonStatistics
     biggest_bust = regular_season_win_loss.keys.min_by do |key|
       (regular_season_win_loss[key] - preseason_win_loss[key]).abs
     end
-
     @league.teams.find do |team|
       biggest_bust == team.team_id
     end.team_name

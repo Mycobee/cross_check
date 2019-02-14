@@ -168,5 +168,51 @@ class TrackerTest < Minitest::Test
     actual = @stat_tracker.worst_fans
     assert_equal [], actual
   end
+
   ###########################################
+
+
+  ################Iteration 5#################
+
+  def test_biggest_bust
+    actual = @stat_tracker.biggest_bust("20122013")
+    assert_equal "Islanders", actual
+  end
+
+  def test_biggest_surprise
+    actual = @stat_tracker.biggest_surprise("20122013")
+    assert_equal "Lightning", actual
+  end
+
+  def test_winningest_coach
+    actual = @stat_tracker.winningest_coach("20122013")
+    assert_equal "Claude Julien", actual
+  end
+
+  def test_worst_coach
+    actual = @stat_tracker.worst_coach("20122013")
+    assert_equal "Jack Capuano", actual
+  end
+
+  def test_most_accurate_team
+    actual = @stat_tracker.most_accurate_team("20122013")
+    assert_equal "Senators", actual
+  end
+
+  def test_least_accurate_team
+    actual = @stat_tracker.least_accurate_team("20122013")
+    assert_equal "Penguins", actual
+  end
+
+  def test_most_hits
+    actual = @stat_tracker.most_hits("20122013")
+    assert_equal "Blackhawks", actual
+  end
+
+  def test_least_hits
+    actual = @stat_tracker.least_hits("20122013")
+    assert_equal "Ducks", actual
+  end
+  ###########################################
+
 end
