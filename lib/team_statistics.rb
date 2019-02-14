@@ -37,6 +37,20 @@ module TeamStatistics
     end
   end
 
+  def winning_games(team_id)
+    @league.games.select do |game|
+      game.home_team_id == team_id && game.outcome.include?("home") ||
+      game.away_team_id == team_id && game.outcome.include?("away")
+    end
+  end
+
+  def losing_games(team_id)
+    @league.games.select do |game|
+      game.home_team_id == team_id && game.outcome.include?("away") ||
+      game.away_team_id == team_id && game.outcome.include?("home")
+    end
+  end
+
   # def best_season(team_id)
   #   season_hash = @league.games.group_by do |game|
   #     game.season
@@ -50,10 +64,7 @@ module TeamStatistics
   end
 
   def average_win_percentage(team_id)
-    team_wins = @league.games.select do |game|
-      game.home_team_id == team_id && game.outcome.include?("home") ||
-      game.away_team_id == team_id && game.outcome.include?("away")
-    end
+    team_wins = winning_games(team_id)
 
     total_games = all_games_played(team_id)
 
@@ -93,15 +104,31 @@ module TeamStatistics
   end
 
   def favorite_opponent(team_id)
+    #Similar to best/worst season
+    #1. Get all home games played by team_id
+    #2. Group_by away_team_id
+    #3. Find all games where home team wins
+    #4. Get all away games played by team_id
+    #5. Group_by home_team_id
   end
 
   def rival(team_id)
   end
 
   def biggest_team_blowout(team_id)
+    team_wins = winning_games(team_id)
+
+    team_wins.max_by do |game|
+      (game.home_goals - game.away_goals).abs
+    end
   end
 
   def worst_loss(team_id)
+    team_losses = losing_games(team_id)
+
+    team_losses.max_by do |game|
+      (game.home_goals - game.away_goals).abs
+    end
   end
 
   def head_to_head(team_id)
