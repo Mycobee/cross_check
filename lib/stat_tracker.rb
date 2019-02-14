@@ -3,12 +3,14 @@ require './lib/league'
 require './lib/league_statistics'
 require './lib/game_statistics'
 require './lib/season_statistics'
+require './lib/team_statistics'
 
 
 class StatTracker
   include LeagueStatistics
   include GameStatistics
   include SeasonStatistics
+  include TeamStatistics
 
   attr_reader :file_paths,
               :league
