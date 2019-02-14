@@ -56,7 +56,7 @@ module TeamStatistics
       game.season
     end
     season_hash.each do |season, games|
-        home_away_win_loss_array = games.map do |game|
+      home_away_win_loss_array = games.map do |game|
         if game.home_team_id == team_id
           game.outcome.include?("home") ? 1 : 0
         end
@@ -69,12 +69,45 @@ module TeamStatistics
     end
     season_result = {}
     season_hash.each do |season, scores|
+      if scores.count == 0
+        next
+      else
       season_result[season] = scores.sum / scores.count
+      end
     end
-    require 'pry'; binding.pry
+    x = season_result.keys.max_by do |season|
+      season_result[season].to_i
+    end
   end
 
   def worst_season(team_id)
+    season_hash = @league.games.group_by do |game|
+      game.season
+    end
+    season_hash.each do |season, games|
+      home_away_win_loss_array = games.map do |game|
+        if game.home_team_id == team_id
+          game.outcome.include?("away") ? 1 : 0
+        end
+        if game.away_team_id == team_id
+          game.outcome.include?("home") ? 1 : 0
+        end
+      end
+      home_away_win_loss_array = home_away_win_loss_array.select {|score| score}
+      season_hash[season] = home_away_win_loss_array
+    end
+    season_result = {}
+    season_hash.each do |season, scores|
+      if scores.count == 0
+        next
+      else
+      season_result[season] = scores.sum / scores.count
+      end
+    end
+    x = season_result.keys.max_by do |season|
+      season_result[season].to_i
+    end
+    require 'pry'; binding.pry
   end
 
   def average_win_percentage(team_id)
@@ -98,7 +131,6 @@ module TeamStatistics
       highest_home_game
     else highest_away_game
     end
-
 
   end
 

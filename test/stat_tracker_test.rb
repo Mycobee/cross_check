@@ -179,16 +179,15 @@ class TrackerTest < Minitest::Test
 
   def test_best_season
     actual = @stat_tracker.best_season("3")
-    require 'pry'; binding.pry
-    
-    assert_equal 1,  actual
+
+    assert_equal 1, actual
   end
-  #
-  # def test_worst_season
-  #   skip
-  #   actual = @stat_tracker.worst_season
-  #   assert_equal #Integer, actual
-  # end
+
+  def test_worst_season
+    actual = @stat_tracker.worst_season("3")
+
+    assert_equal 1, actual
+  end
   #
   # def test_average_win_percenrage
   #   skip
