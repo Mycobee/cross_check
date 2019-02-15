@@ -80,16 +80,16 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_overview_of_each_teams_total_goals
     expected = {
-      "26"=>[1, 1, 3, 1, 4, 2], 
-      "6"=>[2, 3, 3, 6, 3, 5, 3, 2, 1], 
-      "3"=>[2, 2, 1, 1, 4], 
-      "5"=>[1, 0, 0, 1], 
-      "17"=>[1, 4, 1, 1, 1, 3, 2, 3, 0], 
-      "16"=>[1, 0, 4, 2, 3, 4, 1, 4, 2, 2, 5, 5], 
-      "9"=>[4, 1, 6, 6, 3], 
-      "8"=>[1, 2, 2, 3, 1], 
-      "30"=>[1, 2, 1, 3, 0], 
-      "19"=>[0, 3, 1, 2, 2, 2], 
+      "26"=>[1, 1, 3, 1, 4, 2],
+      "6"=>[2, 3, 3, 6, 3, 5, 3, 2, 1],
+      "3"=>[2, 2, 1, 1, 4],
+      "5"=>[1, 0, 0, 1],
+      "17"=>[1, 4, 1, 1, 1, 3, 2, 3, 0],
+      "16"=>[1, 0, 4, 2, 3, 4, 1, 4, 2, 2, 5, 5],
+      "9"=>[4, 1, 6, 6, 3],
+      "8"=>[1, 2, 2, 3, 1],
+      "30"=>[1, 2, 1, 3, 0],
+      "19"=>[0, 3, 1, 2, 2, 2],
       "24"=>[4, 3]
     }
     actual = @stat_tracker.total_goals_made_by_team
@@ -108,16 +108,16 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_an_overview_of_each_teams_forfeited_goals
     expected = {
-      "26"=>[2, 2, 0, 3, 2, 1], 
-      "6"=>[2, 2, 1, 4, 1, 0, 1, 1, 0], 
-      "3"=>[3, 5, 2, 3, 3], 
-      "5"=>[3, 6, 2, 1], 
-      "17"=>[4, 1, 1, 0, 4, 4, 2, 3, 4], 
-      "16"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1], 
-      "9"=>[2, 3, 1, 2, 1], 
-      "8"=>[4, 1, 6, 3, 6], 
-      "30"=>[2, 5, 2, 3, 5], 
-      "19"=>[1, 1, 1, 4, 3, 2], 
+      "26"=>[2, 2, 0, 3, 2, 1],
+      "6"=>[2, 2, 1, 4, 1, 0, 1, 1, 0],
+      "3"=>[3, 5, 2, 3, 3],
+      "5"=>[3, 6, 2, 1],
+      "17"=>[4, 1, 1, 0, 4, 4, 2, 3, 4],
+      "16"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1],
+      "9"=>[2, 3, 1, 2, 1],
+      "8"=>[4, 1, 6, 3, 6],
+      "30"=>[2, 5, 2, 3, 5],
+      "19"=>[1, 1, 1, 4, 3, 2],
       "24"=>[1, 0]
     }
     actual = @stat_tracker.total_goals_forfeited_by_team
@@ -215,4 +215,85 @@ class TrackerTest < Minitest::Test
   end
   ###########################################
 
+  #######Iteration 4 ########################
+
+  def test_team_info
+    actual = @stat_tracker.team_info("1")
+    assert_equal 1 , actual
+  end
+
+  def test_best_season
+    actual = @stat_tracker.best_season("3")
+
+    assert_equal 1, actual
+  end
+
+  def test_worst_season
+    actual = @stat_tracker.worst_season("3")
+
+    assert_equal 1, actual
+  end
+  #
+  # def test_average_win_percenrage
+  #   skip
+  #   actual = @stat_tracker.average_win_percentage
+  #   assert_equal #Float, actual
+  #
+  # end
+  #
+  # def test_most_goals_scored
+  #   skip
+  #   actual = @stat_tracker.most_goals_scored
+  #   assert_equal #Integer, actual
+  #
+  # end
+  #
+  # def test_fewest_goals_scored
+  #   skip
+  #   actual = @stat_tracker.fewest_goals_scored
+  #   assert_equal #Integer, actual
+  #
+  # end
+  #
+  # def test_favorite_opponent
+  #   skip
+  #   actual = @stat_tracker.favorite_opponent
+  #   assert_equal #String, actual
+  #
+  # end
+  #
+  # def test_rival
+  #   skip
+  #   actual = @stat_tracker.rival
+  #   assert_equal #String, actual
+  #
+  # end
+  #
+  # def test_biggest_team_blowout
+  #   skip
+  #   actual = @stat_tracker.biggest_team_blowout
+  #   assert_equal #Integer, actual
+  #
+  # end
+  #
+  # def test_worst_loss
+  #   skip
+  #   actual = @stat_tracker.worst_loss
+  #   assert_equal #Integer, actual
+  #
+  # end
+  #
+  # def test_head_to_head
+  #   skip
+  #   actual = @stat_tracker.head_to_head
+  #   assert_equal #{}, actual
+  #
+  # end
+  #
+  # def test_seasonal_summary
+  #   skip
+  #   actual = @stat_tracker.seasonal_summary
+  #   assert_equal #{}, actual
+  #
+  # end
 end
