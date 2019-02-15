@@ -93,7 +93,7 @@ module LeagueStatistics
   end
 
   def best_fans
-    all_records = win_loss_records_overview # from LeagueRecordStats
+    all_records = filter_win_loss_records
     best_fans_by_id = all_records.keys.max_by do |record|
       home_record = all_records[record][:home]
       away_record = all_records[record][:away]
@@ -105,7 +105,7 @@ module LeagueStatistics
   end
 
   def worst_fans
-    all_records = win_loss_records_overview # from LeagueRecordStats
+    all_records = filter_win_loss_records
     all_records.keys.select do |record|
       home_record = all_records[record][:home]
       away_record = all_records[record][:away]
