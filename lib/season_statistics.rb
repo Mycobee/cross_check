@@ -3,7 +3,7 @@ require './lib/league_offense_stats'
 
 module SeasonStatistics
   include SeasonRecordStats
-  include LeagueOffenseStats
+  
   def biggest_bust(season_id)
     games_by_season = @league.games.select {|game| game.season == season_id}
     preseason_win_loss_records = preseason_records(games_by_season)

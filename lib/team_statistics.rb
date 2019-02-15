@@ -104,10 +104,9 @@ module TeamStatistics
       season_result[season] = scores.sum / scores.count
       end
     end
-    x = season_result.keys.max_by do |season|
+    season_result.keys.max_by do |season|
       season_result[season].to_i
     end
-    require 'pry'; binding.pry
   end
 
   def average_win_percentage(team_id)
