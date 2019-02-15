@@ -24,11 +24,11 @@ class TeamGame
     @head_coach = team_game_info[:head_coach]
     @goals = team_game_info[:goals].to_i
     @shots = team_game_info[:shots].to_i
-    @hits = team_game_info[:hits]
+    @hits = team_game_info[:hits].to_i
     @pim = team_game_info[:pim]
-    @power_play_opportunities = team_game_info[:powerPlayOpportunities]
-    @power_play_goals = team_game_info[:powerPlayGoals]
-    @face_off_win_percentage = team_game_info[:faceOffWinPercentage]
+    @power_play_opportunities = team_game_info[:powerplayopportunities]
+    @power_play_goals = team_game_info[:powerplaygoals].to_i
+    @face_off_win_percentage = team_game_info[:faceoffwinpercentage]
     @give_aways = team_game_info[:giveaways]
     @take_aways = team_game_info[:takeaways]
   end
