@@ -80,16 +80,16 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_overview_of_each_teams_total_goals
     expected = {
-      "26"=>[1, 1, 3, 1, 4, 2], 
-      "6"=>[2, 3, 3, 6, 3, 5, 3, 2, 1], 
-      "3"=>[2, 2, 1, 1, 4], 
-      "5"=>[1, 0, 0, 1], 
-      "17"=>[1, 4, 1, 1, 1, 3, 2, 3, 0], 
-      "16"=>[1, 0, 4, 2, 3, 4, 1, 4, 2, 2, 5, 5], 
-      "9"=>[4, 1, 6, 6, 3], 
-      "8"=>[1, 2, 2, 3, 1], 
-      "30"=>[1, 2, 1, 3, 0], 
-      "19"=>[0, 3, 1, 2, 2, 2], 
+      "26"=>[1, 1, 3, 1, 4, 2],
+      "6"=>[2, 3, 3, 6, 3, 5, 3, 2, 1],
+      "3"=>[2, 2, 1, 1, 4],
+      "5"=>[1, 0, 0, 1],
+      "17"=>[1, 4, 1, 1, 1, 3, 2, 3, 0],
+      "16"=>[1, 0, 4, 2, 3, 4, 1, 4, 2, 2, 5, 5],
+      "9"=>[4, 1, 6, 6, 3],
+      "8"=>[1, 2, 2, 3, 1],
+      "30"=>[1, 2, 1, 3, 0],
+      "19"=>[0, 3, 1, 2, 2, 2],
       "24"=>[4, 3]
     }
     actual = @stat_tracker.total_goals_made_by_team
@@ -108,16 +108,16 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_an_overview_of_each_teams_forfeited_goals
     expected = {
-      "26"=>[2, 2, 0, 3, 2, 1], 
-      "6"=>[2, 2, 1, 4, 1, 0, 1, 1, 0], 
-      "3"=>[3, 5, 2, 3, 3], 
-      "5"=>[3, 6, 2, 1], 
-      "17"=>[4, 1, 1, 0, 4, 4, 2, 3, 4], 
-      "16"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1], 
-      "9"=>[2, 3, 1, 2, 1], 
-      "8"=>[4, 1, 6, 3, 6], 
-      "30"=>[2, 5, 2, 3, 5], 
-      "19"=>[1, 1, 1, 4, 3, 2], 
+      "26"=>[2, 2, 0, 3, 2, 1],
+      "6"=>[2, 2, 1, 4, 1, 0, 1, 1, 0],
+      "3"=>[3, 5, 2, 3, 3],
+      "5"=>[3, 6, 2, 1],
+      "17"=>[4, 1, 1, 0, 4, 4, 2, 3, 4],
+      "16"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1],
+      "9"=>[2, 3, 1, 2, 1],
+      "8"=>[4, 1, 6, 3, 6],
+      "30"=>[2, 5, 2, 3, 5],
+      "19"=>[1, 1, 1, 4, 3, 2],
       "24"=>[1, 0]
     }
     actual = @stat_tracker.total_goals_forfeited_by_team
@@ -168,5 +168,90 @@ class TrackerTest < Minitest::Test
     actual = @stat_tracker.worst_fans
     assert_equal [], actual
   end
+  ###########################################
+
+  ########## iteration 5 ####################
+
+  def test_biggest_bust
+    assert_equal 'Islanders', @stat_tracker.biggest_bust('20122013')
+  end
+
+  def test_biggest_surprise
+    assert_equal 'Lightning', @stat_tracker.biggest_surprise('20122013')
+  end
+
+  def test_winningest_coach
+    locations = {
+      games: './data/mocks/mock_game_2.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
+    }
+    stat_tracker = StatTracker.from_csv(locations)
+    assert_equal 'Bruce Boudreau', stat_tracker.winningest_coach('20122013')
+  end
+
+  def test_worst_coach
+    locations = {
+      games: './data/mocks/mock_game_2.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
+    }
+    stat_tracker = StatTracker.from_csv(locations)
+    assert_equal "Todd Richards", stat_tracker.worst_coach('20122013')
+
+  end
+
+  def test_most_accurate_team
+    locations = {
+      games: './data/mocks/mock_game_2.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
+    }
+    stat_tracker = StatTracker.from_csv(locations)
+    assert_equal 'whothefuckknows?', stat_tracker.most_accurate_team('20122013')
+
+  end
+
+  def test_least_accurate_team
+    skip
+    locations = {
+      games: './data/mocks/mock_game_2.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
+    }
+    stat_tracker = StatTracker.from_csv(locations)
+  end
+
+  def test_most_hits
+    skip
+    locations = {
+      games: './data/mocks/mock_game_2.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
+    }
+    stat_tracker = StatTracker.from_csv(locations)
+  end
+
+  def test_least_hits
+    skip
+    locations = {
+      games: './data/mocks/mock_game_2.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
+    }
+    stat_tracker = StatTracker.from_csv(locations)
+  end
+
+  def test_power_play_goal_percentage
+    skip
+    locations = {
+      games: './data/mocks/mock_game_2.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
+    }
+    stat_tracker = StatTracker.from_csv(locations)
+
+  end
+
   ###########################################
 end
