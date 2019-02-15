@@ -13,10 +13,23 @@ class TeamTest < Minitest::Test
     assert_instance_of Team, @team
   end
 
-  def test_it_has_team_attributes
-    mock_team.each do |key, value|
-      expected = @team.instance_variable_get("@#{key}")
-      assert_equal value, expected
-    end
+  def test_it_has_a_franchise_id
+    assert_equal "23", @team.franchise_id
+  end
+
+  def test_it_has_a_short_name
+    assert_equal "New Jersey", @team.short_name
+  end
+
+  def test_it_shows_team_name
+    assert_equal "Devils", @team.team_name
+  end
+
+  def test_it_has_abbreviation
+    assert_equal "NJD", @team.abbreviation
+  end
+
+  def test_it_has_link
+    assert_equal "/api/v1/teams/1", @team.link
   end
 end

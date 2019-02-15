@@ -22,11 +22,31 @@ module MockData
   def mock_team
     {
       team_id: "1",
-      franchise_id: "23",
-      short_name: "New Jersey",
-      team_name: "Devils",
+      franchiseid: "23",
+      shortname: "New Jersey",
+      teamname: "Devils",
       abbreviation: "NJD",
       link: "/api/v1/teams/1"
     }
+  end
+
+  def mock_team_game
+  {
+    game_id: "2012030221",
+    team_id: "3",
+    HoA:"away", 
+    won: "FALSE",
+    settled_in: "OT",
+    head_coach: "John Tortorella",
+    goals: "2",
+    shots: "35",
+    hits: "44",
+    pim: "8",
+    powerplayopportunities: "3",
+    powerplaygoals: "0",
+    faceoffwinpercentage: "44.8",
+    giveaways: "17",
+    takeaways: "7"
+  }
   end
 end
