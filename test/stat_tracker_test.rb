@@ -254,4 +254,84 @@ class TrackerTest < Minitest::Test
   end
 
   ###########################################
+=======
+  #######Iteration 4 ########################
+
+  def test_team_info
+    actual = @stat_tracker.team_info("1")
+    assert_equal 1 , actual
+  end
+
+  def test_best_season
+    actual = @stat_tracker.best_season("3")
+    assert_equal 1, actual
+  end
+
+  def test_worst_season
+    actual = @stat_tracker.worst_season("3")
+    assert_equal 1, actual
+  end
+  #
+  # def test_average_win_percenrage
+  #   skip
+  #   actual = @stat_tracker.average_win_percentage
+  #   assert_equal #Float, actual
+  #
+  # end
+  #
+  # def test_most_goals_scored
+  #   skip
+  #   actual = @stat_tracker.most_goals_scored
+  #   assert_equal #Integer, actual
+  #
+  # end
+  #
+  # def test_fewest_goals_scored
+  #   skip
+  #   actual = @stat_tracker.fewest_goals_scored
+  #   assert_equal #Integer, actual
+  #
+  # end
+  #
+  # def test_favorite_opponent
+  #   skip
+  #   actual = @stat_tracker.favorite_opponent
+  #   assert_equal #String, actual
+  #
+  # end
+  #
+  # def test_rival
+  #   skip
+  #   actual = @stat_tracker.rival
+  #   assert_equal #String, actual
+  #
+  # end
+  #
+  # def test_biggest_team_blowout
+  #   skip
+  #   actual = @stat_tracker.biggest_team_blowout
+  #   assert_equal #Integer, actual
+  #
+  # end
+  #
+  # def test_worst_loss
+  #   skip
+  #   actual = @stat_tracker.worst_loss
+  #   assert_equal #Integer, actual
+  #
+  # end
+  #
+  # def test_head_to_head
+  #   skip
+  #   actual = @stat_tracker.head_to_head
+  #   assert_equal #{}, actual
+  #
+  # end
+  #
+  # def test_seasonal_summary
+  #   skip
+  #   actual = @stat_tracker.seasonal_summary
+  #   assert_equal #{}, actual
+  #
+  # end
 end
