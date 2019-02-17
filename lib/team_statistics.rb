@@ -1,10 +1,11 @@
-
+require 'pry'
 module TeamStatistics
 
   def find_team(team_id)
     @league.teams.find do |team|
       team.team_id == team_id
     end
+    binding.pry
   end
 
   def team_info(team_id)
@@ -93,7 +94,6 @@ module TeamStatistics
     x = season_result.keys.max_by do |season|
       season_result[season].to_i
     end
-    require 'pry'; binding.pry
   end
 
   def worst_season(team_id)
@@ -125,7 +125,6 @@ module TeamStatistics
     x = season_result.keys.max_by do |season|
       season_result[season].to_i
     end
-    require 'pry'; binding.pry
   end
 
   def average_win_percentage(team_id)
@@ -192,7 +191,7 @@ module TeamStatistics
     end
 
 
-    home_game_hash.keys.inject({}) do |hash, opponent|
+    home_away_win_loss = home_game_hash.keys.inject({}) do |hash, opponent|
       if home_game_hash[opponent] && away_game_hash[opponent]
         hash[opponent] = home_game_hash[opponent] + away_game_hash[opponent]
       elsif home_game_hash[opponent]
@@ -202,18 +201,81 @@ module TeamStatistics
       hash
     end
 
+    team_result = {}
+    home_away_win_loss.each do |team, scores|
+      if scores.count == 0
+        next
+      else
+      team_result[team] = scores.sum.to_f / scores.count
+      end
+    end
+    x = team_result.keys.max_by do |team|
+      team_result[team].to_i
+    end
+    team_name = []
+    @league.teams.each do |team|
+      if team.team_id == x
+        team_name = team.team_name
+      end
+    end
+    return team_name
 
-
-
-
-    #1. Get all home games played by team_id
-    #2. Group_by away_team_id
-    #3. Find all games where home team wins
-    #4. Get all away games played by team_id
-    #5. Group_by home_team_id
   end
 
   def rival(team_id)
+    home_game_hash = home_games(team_id).group_by do |game|
+      game.away_team_id
+    end
+
+    home_game_hash.each do |opponent, games|
+      home_win_loss_array = games.map do |game|
+        game.outcome.include?("away") ? 1 : 0
+      end
+      home_win_loss_array = home_win_loss_array.select {|score| score}
+      home_game_hash[opponent] = home_win_loss_array
+    end
+
+    away_game_hash = away_games(team_id).group_by do |game|
+      game.home_team_id
+    end
+    away_game_hash.each do |opponent, games|
+      away_win_loss_array = games.map do |game|
+        game.outcome.include?("home") ? 1 : 0
+      end
+      away_win_loss_array = away_win_loss_array.select {|score| score}
+      away_game_hash[opponent] = away_win_loss_array
+    end
+
+
+    home_away_win_loss = home_game_hash.keys.inject({}) do |hash, opponent|
+      if home_game_hash[opponent] && away_game_hash[opponent]
+        hash[opponent] = home_game_hash[opponent] + away_game_hash[opponent]
+      elsif home_game_hash[opponent]
+        hash[opponent] = home_game_hash[opponent]
+      else hash[opponent] = away_game_hash[opponent]
+      end
+      hash
+    end
+
+    team_result = {}
+    home_away_win_loss.each do |team, scores|
+      if scores.count == 0
+        next
+      else
+      team_result[team] = scores.sum.to_f / scores.count
+      end
+    end
+    x = team_result.keys.max_by do |team|
+      team_result[team].to_i
+    end
+    team_name = []
+    @league.teams.each do |team|
+      if team.team_id == x
+        team_name = team.team_name
+      end
+    end
+    binding.pry
+    return team_name
   end
 
   def biggest_team_blowout(team_id)

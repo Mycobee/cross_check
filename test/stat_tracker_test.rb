@@ -173,7 +173,7 @@ class TrackerTest < Minitest::Test
   #######Iteration 4 ########################
 
   def test_team_info
-    actual = @stat_tracker.team_info("1")
+    actual = @stat_tracker.team_info("3")
     assert_equal 1 , actual
   end
 
@@ -216,13 +216,12 @@ class TrackerTest < Minitest::Test
     assert_equal 1, actual
 
   end
-  #
-  # def test_rival
-  #   skip
-  #   actual = @stat_tracker.rival
-  #   assert_equal #String, actual
-  #
-  # end
+
+  def test_rival
+    actual = @stat_tracker.rival("3")
+    assert_equal 1, actual
+
+  end
   #
   # def test_biggest_team_blowout
   #   skip
