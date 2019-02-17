@@ -276,15 +276,17 @@ class TrackerTest < Minitest::Test
   #######Iteration 4 ########################
 
   def test_team_info
-    actual = @stat_tracker.team_info("1")
+
+    actual = @stat_tracker.team_info("3")
     expected = {
-      :team_id=>"1", 
-      :franchise_id=>"23", 
-      :short_name=>"New Jersey", 
-      :team_name=>"Devils", 
-      :abbreviation=>"NJD", 
-      :link=>"/api/v1/teams/1"
+      :team_id => "3",
+      :franchise_id => "10",
+      :short_name => "NY Rangers",
+      :team_name => "Rangers",
+      :abbreviation => "NYR",
+      :link => "/api/v1/teams/3"
     }
+
     assert_equal expected , actual
   end
 
@@ -295,69 +297,65 @@ class TrackerTest < Minitest::Test
 
   def test_worst_season
     actual = @stat_tracker.worst_season("3")
-    assert_equal "20122013", actual
+
+
+    assert_equal "20132014", actual
   end
-  #
-  # def test_average_win_percenrage
-  #   skip
-  #   actual = @stat_tracker.average_win_percentage
-  #   assert_equal #Float, actual
-  #
-  # end
-  #
-  # def test_most_goals_scored
-  #   skip
-  #   actual = @stat_tracker.most_goals_scored
-  #   assert_equal #Integer, actual
-  #
-  # end
-  #
-  # def test_fewest_goals_scored
-  #   skip
-  #   actual = @stat_tracker.fewest_goals_scored
-  #   assert_equal #Integer, actual
-  #
-  # end
-  #
-  # def test_favorite_opponent
-  #   skip
-  #   actual = @stat_tracker.favorite_opponent
-  #   assert_equal #String, actual
-  #
-  # end
-  #
-  # def test_rival
-  #   skip
-  #   actual = @stat_tracker.rival
-  #   assert_equal #String, actual
-  #
-  # end
-  #
-  # def test_biggest_team_blowout
-  #   skip
-  #   actual = @stat_tracker.biggest_team_blowout
-  #   assert_equal #Integer, actual
-  #
-  # end
-  #
-  # def test_worst_loss
-  #   skip
-  #   actual = @stat_tracker.worst_loss
-  #   assert_equal #Integer, actual
-  #
-  # end
-  #
-  # def test_head_to_head
-  #   skip
-  #   actual = @stat_tracker.head_to_head
-  #   assert_equal #{}, actual
-  #
-  # end
-  #
-  # def test_seasonal_summary
-  #   skip
-  #   actual = @stat_tracker.seasonal_summary
-  #   assert_equal #{}, actual
-  #
-  # end
+
+  def test_average_win_percenrage
+    actual = @stat_tracker.average_win_percentage("3")
+
+    assert_equal 16.67, actual
+  end
+
+  def test_most_goals_scored
+    actual = @stat_tracker.most_goals_scored("3")
+
+    assert_equal 4, actual
+  end
+
+  def test_fewest_goals_scored
+    actual = @stat_tracker.fewest_goals_scored("3")
+
+    assert_equal 1, actual
+  end
+
+  def test_favorite_opponent
+    actual = @stat_tracker.favorite_opponent("3")
+
+    assert_equal "Bruins", actual
+  end
+
+  def test_rival
+    actual = @stat_tracker.rival("3")
+
+    assert_equal "Blues", actual
+  end
+
+  def test_biggest_team_blowout
+    actual = @stat_tracker.biggest_team_blowout("3")
+
+    assert_equal 1, actual
+  end
+
+  def test_worst_loss
+    actual = @stat_tracker.worst_loss("3")
+
+    assert_equal 3, actual
+  end
+
+  def test_head_to_head
+    skip
+    actual = @stat_tracker.head_to_head
+    assert_equal #{}, actual
+
+  end
+
+  def test_seasonal_summary
+    skip
+    actual = @stat_tracker.seasonal_summary
+    assert_equal #{}, actual
+
+  end
+
 end
