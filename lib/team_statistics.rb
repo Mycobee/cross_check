@@ -5,7 +5,6 @@ module TeamStatistics
     @league.teams.find do |team|
       team.team_id == team_id
     end
-    binding.pry
   end
 
   def team_info(team_id)
@@ -129,10 +128,9 @@ module TeamStatistics
 
   def average_win_percentage(team_id)
     team_wins = winning_games(team_id)
-
     total_games = all_games_played(team_id)
-
-    team_wins.count.to_f / total_games.count
+    avg_win_percentage = (team_wins.count.to_f / total_games.count)
+    avg_win_percentage = (avg_win_percentage * 100).round(2)
   end
 
   def most_goals_scored(team_id)
@@ -143,10 +141,9 @@ module TeamStatistics
     highest_away_game = away_games(team_id).max_by do |game|
       game.away_goals
     end
-
-    if highest_home_game > highest_away_game
-      highest_home_game
-    else highest_away_game
+    if highest_home_game.home_goals > highest_away_game.away_goals
+      highest_home_game.home_goals
+    else highest_away_game.away_goals
     end
 
   end
@@ -160,9 +157,9 @@ module TeamStatistics
       game.away_goals
     end
 
-    if lowest_home_game < lowest_away_game
-      lowest_home_game
-    else lowest_away_game
+    if lowest_home_game.home_goals < lowest_away_game.away_goals
+      lowest_home_game.home_goals
+    else lowest_away_game.away_goals
     end
   end
 
@@ -274,24 +271,26 @@ module TeamStatistics
         team_name = team.team_name
       end
     end
-    binding.pry
     return team_name
   end
 
   def biggest_team_blowout(team_id)
     team_wins = winning_games(team_id)
 
-    team_wins.max_by do |game|
+    biggest_blowout_game = team_wins.max_by do |game|
       (game.home_goals - game.away_goals).abs
     end
+    (biggest_blowout_game.home_goals - biggest_blowout_game.away_goals).abs
   end
 
   def worst_loss(team_id)
     team_losses = losing_games(team_id)
 
-    team_losses.max_by do |game|
+    worst_loss_game = team_losses.max_by do |game|
       (game.home_goals - game.away_goals).abs
     end
+    (worst_loss_game.home_goals - worst_loss_game.away_goals).abs
+
   end
 
   def head_to_head(team_id)
