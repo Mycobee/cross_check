@@ -4,9 +4,9 @@ require './lib/stat_tracker'
 class TrackerTest < Minitest::Test
   def setup
     @locations = {
-      games: './data/game.csv',
-      teams: './data/team_info.csv',
-      game_teams: './data/game_teams_stats.csv',
+      games: './data/mocks/mock_game.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
     }
     @stat_tracker = StatTracker.from_csv(@locations)
   end
@@ -279,12 +279,12 @@ class TrackerTest < Minitest::Test
 
     actual = @stat_tracker.team_info("3")
     expected = {
-      :team_id => "3",
-      :franchise_id => "10",
-      :short_name => "NY Rangers",
-      :team_name => "Rangers",
-      :abbreviation => "NYR",
-      :link => "/api/v1/teams/3"
+      "team_id" => "3",
+      "franchise_id" => "10",
+      "short_name" => "NY Rangers",
+      "team_name" => "Rangers",
+      "abbreviation" => "NYR",
+      "link" => "/api/v1/teams/3"
     }
 
     assert_equal expected , actual
@@ -305,7 +305,7 @@ class TrackerTest < Minitest::Test
   def test_average_win_percenrage
     actual = @stat_tracker.average_win_percentage("3")
 
-    assert_equal 16.67, actual
+    assert_equal 0.17, actual
   end
 
   def test_most_goals_scored
@@ -321,15 +321,25 @@ class TrackerTest < Minitest::Test
   end
 
   def test_favorite_opponent
-    actual = @stat_tracker.favorite_opponent("18")
+    locations = {
+      games: './data/mocks/mock_game_2.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
+    }
+    actual = @stat_tracker.favorite_opponent("3")
 
-    assert_equal "Oilers", actual
+    assert_equal "Bruins", actual
   end
 
   def test_rival
-    actual = @stat_tracker.rival("18")
+    locations = {
+      games: './data/mocks/mock_game_2.csv',
+      teams: './data/mocks/mock_team_info.csv',
+      game_teams: './data/mocks/mock_game_teams_stats.csv',
+    }
+    actual = @stat_tracker.rival("3")
 
-    assert_equal "Red Wings", actual
+    assert_equal "Blues", actual
   end
 
   def test_biggest_team_blowout
