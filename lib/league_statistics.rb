@@ -1,6 +1,6 @@
-require './lib/league_offense_stats'
-require './lib/league_defense_stats'
-require './lib/league_record_stats'
+require_relative './league_offense_stats'
+require_relative './league_defense_stats'
+require_relative './league_record_stats'
 
 module LeagueStatistics
   include LeagueOffenseStats
@@ -99,7 +99,7 @@ module LeagueStatistics
       away_record = all_records[record][:away]
       home_ratio = home_record.sum / home_record.count.to_f
       away_ratio = away_record.sum / away_record.count.to_f
-      home_ratio - away_ratio  
+      home_ratio - away_ratio
     end
     @league.teams.find {|team| team.team_id == best_fans_by_id }.team_name
   end
