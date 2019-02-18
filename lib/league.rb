@@ -1,6 +1,6 @@
-require_relative './game'
-require_relative './team'
-require_relative './team_game'
+require './lib/game'
+require './lib/team'
+require './lib/team_game'
 
 class League
   attr_reader :games,
