@@ -1,16 +1,16 @@
-require_relative './season_record_stats'
-require_relative './league_offense_stats'
+require './lib/season_record_stats'
+require './lib/league_offense_stats'
 
 module SeasonStatistics
   include SeasonRecordStats
-
+  
   def biggest_bust(season_id)
     games_by_season = @league.games.select {|game| game.season == season_id}
     preseason_win_loss_records = preseason_records(games_by_season)
     regular_season_win_loss_records = regular_season_records(games_by_season)
     preseason_win_loss = season_record_percentages(preseason_win_loss_records)
     regular_season_win_loss = season_record_percentages(regular_season_win_loss_records)
-
+    
     regular_season_win_loss.each do |key, _|
       if !preseason_win_loss.key?(key)
         preseason_win_loss[key] = 0
@@ -103,7 +103,7 @@ module SeasonStatistics
 
   def power_play_goal_percentage(season_id)
     team_games_in_season = seasons_games_by_team_id(season_id)
-    total_power_play_goals = team_games_in_season.inject(0) do |sum, game|
+    total_power_play_goals = team_games_in_season.inject(0) do |sum, game| 
       sum += game.power_play_goals
     end
     total_goals = team_games_in_season.inject(0) {|sum, game| sum += game.goals}
