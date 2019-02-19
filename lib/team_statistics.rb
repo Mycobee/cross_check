@@ -18,11 +18,6 @@ module TeamStatistics
     season_hash.each do |season, games|
       home_away_win_loss_array = games.map do |game|
         conditional_setting_of_win_loss(game, team_id, "home", "away")
-        # if game.home_team_id == team_id
-        #   game.outcome.include?("home") ? 1 : 0
-        # else
-        #   game.outcome.include?("away") ? 1 : 0
-        # end
       end
       home_away_win_loss_array = home_away_win_loss_array.select {|score| score}
       season_hash[season] = home_away_win_loss_array
@@ -44,13 +39,7 @@ module TeamStatistics
     season_hash = all_games_played_group_by_season(team_id)
     season_hash.each do |season, games|
       home_away_win_loss_array = games.map do |game|
-
-        if game.home_team_id == team_id
-          game.outcome.include?("away") ? 1 : 0
-        else
-          game.outcome.include?("home") ? 1 : 0
-        end
-
+        conditional_setting_of_win_loss(game, team_id, "away", "home")
       end
       home_away_win_loss_array = home_away_win_loss_array.select {|score| score}
       season_hash[season] = home_away_win_loss_array
@@ -111,24 +100,9 @@ module TeamStatistics
 
   def favorite_opponent(team_id)
     home_game_hash = home_or_away_games_group_by_category(team_id, "home_team_id", "away_team_id")
-
-    home_game_hash.each do |opponent, games|
-      home_win_loss_array = games.map do |game|
-        game.outcome.include?("home") ? 1 : 0
-      end
-      home_win_loss_array = home_win_loss_array.select {|score| score}
-      home_game_hash[opponent] = home_win_loss_array
-    end
     away_game_hash = home_or_away_games_group_by_category(team_id, "away_team_id", "home_team_id")
-    away_game_hash.each do |opponent, games|
-      away_win_loss_array = games.map do |game|
-        game.outcome.include?("away") ? 1 : 0
-      end
-      away_win_loss_array = away_win_loss_array.select {|score| score}
-      away_game_hash[opponent] = away_win_loss_array
-    end
-
-
+    setting_win_loss_as_1_or_0(home_game_hash, "home")
+    setting_win_loss_as_1_or_0(away_game_hash, "away")
     home_away_win_loss = home_game_hash.keys.inject({}) do |hash, opponent|
       if home_game_hash[opponent] && away_game_hash[opponent]
         hash[opponent] = home_game_hash[opponent] + away_game_hash[opponent]
@@ -166,23 +140,9 @@ module TeamStatistics
 
   def rival(team_id)
     home_game_hash = home_or_away_games_group_by_category(team_id, "home_team_id", "away_team_id")
-    home_game_hash.each do |opponent, games|
-      home_win_loss_array = games.map do |game|
-        game.outcome.include?("away") ? 1 : 0
-      end
-      home_win_loss_array = home_win_loss_array.select {|score| score}
-      home_game_hash[opponent] = home_win_loss_array
-    end
     away_game_hash = home_or_away_games_group_by_category(team_id, "away_team_id", "home_team_id")
-    away_game_hash.each do |opponent, games|
-      away_win_loss_array = games.map do |game|
-        game.outcome.include?("home") ? 1 : 0
-      end
-      away_win_loss_array = away_win_loss_array.select {|score| score}
-      away_game_hash[opponent] = away_win_loss_array
-    end
-
-
+    setting_win_loss_as_1_or_0(home_game_hash, "away")
+    setting_win_loss_as_1_or_0(away_game_hash, "home")
     home_away_win_loss = home_game_hash.keys.inject({}) do |hash, opponent|
       if home_game_hash[opponent] && away_game_hash[opponent]
         hash[opponent] = home_game_hash[opponent] + away_game_hash[opponent]
@@ -238,22 +198,9 @@ module TeamStatistics
   def head_to_head(team_id)
     #################HELPER METHOD#########################
     home_game_hash = home_or_away_games_group_by_category(team_id, "home_team_id", "away_team_id")
-    home_game_hash.each do |opponent, games|
-      home_win_loss_array = games.map do |game|
-        game.outcome.include?("home") ? 1 : 0
-      end
-      home_win_loss_array = home_win_loss_array.select {|score| score}
-      home_game_hash[opponent] = home_win_loss_array
-    end
     away_game_hash = home_or_away_games_group_by_category(team_id, "away_team_id", "home_team_id")
-    away_game_hash.each do |opponent, games|
-      away_win_loss_array = games.map do |game|
-        game.outcome.include?("away") ? 1 : 0
-      end
-      away_win_loss_array = away_win_loss_array.select {|score| score}
-      away_game_hash[opponent] = away_win_loss_array
-    end
-
+    setting_win_loss_as_1_or_0(home_game_hash, "home")
+    setting_win_loss_as_1_or_0(away_game_hash, "away")
 
     home_away_win_loss = home_game_hash.keys.inject({}) do |hash, opponent|
       if home_game_hash[opponent] && away_game_hash[opponent]
@@ -296,12 +243,7 @@ module TeamStatistics
    season_games.each do |season, games|
      if games[:preseason]
        win_loss_count = games[:preseason].map do |game|
-
-       if game.away_team_id == team_id
-          game.outcome.include?("away") ? 1 : 0
-       else
-         game.outcome.include?("home") ? 1 : 0
-       end
+         conditional_setting_of_win_loss(game, team_id, "home", "away")
      end
       win_percentage = (win_loss_count.sum / win_loss_count.count.to_f).round(2)
 
@@ -339,13 +281,8 @@ module TeamStatistics
       }
 
         win_loss_count = games[:regular_season].map do |game|
-
-        if game.away_team_id == team_id
-           game.outcome.include?("away") ? 1 : 0
-        else
-          game.outcome.include?("home") ? 1 : 0
+          conditional_setting_of_win_loss(game, team_id, "home", "away")
         end
-      end
        win_percentage = (win_loss_count.sum / win_loss_count.count.to_f).round(2)
 
        total_team_goals = games[:regular_season].map do |game|

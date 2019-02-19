@@ -53,4 +53,14 @@ module TeamStatisticsHelper
     end
   end
 
+  def setting_win_loss_as_1_or_0(game_hash, string_result)
+    game_hash.each do |opponent, games|
+      home_win_loss_array = games.map do |game|
+        game.outcome.include?(string_result) ? 1 : 0
+      end
+      home_win_loss_array = home_win_loss_array.select {|score| score}
+      game_hash[opponent] = home_win_loss_array
+    end
+  end
+
 end
