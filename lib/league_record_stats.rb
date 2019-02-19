@@ -21,17 +21,21 @@ module LeagueRecordStats
     end
   end
 
+  def conditional_fill_of_records(aggregate_record, team, home_win_loss, away_win_loss)
+    if !home_win_loss.length.zero?
+      aggregate_record[team.team_id][:home] = home_win_loss
+    end
+    if !away_win_loss.length.zero?
+       aggregate_record[team.team_id][:away] = away_win_loss
+    end
+  end
+
   def win_loss_records_overview
     @league.teams.inject({}) do |aggregate_record, team|
       home_win_loss = home_away_record(team.team_id, "home_team_id", "home")
       away_win_loss = home_away_record(team.team_id, "away_team_id", "away")
       aggregate_record[team.team_id] = {}
-      if !home_win_loss.length.zero? 
-        aggregate_record[team.team_id][:home] = home_win_loss
-      end
-      if !away_win_loss.length.zero?
-         aggregate_record[team.team_id][:away] = away_win_loss
-      end
+      conditional_fill_of_records(aggregate_record, team, home_win_loss, away_win_loss)
       aggregate_record
     end
   end

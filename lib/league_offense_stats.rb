@@ -33,5 +33,5 @@ module LeagueOffenseStats
 
   def total_goals_when_at_home
     home_away_goals_scored("home_team_id", "home_goals")
-  end 
+  end
 end
