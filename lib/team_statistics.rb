@@ -221,7 +221,7 @@ module TeamStatistics
     end
     team_name = []
     @league.teams.each do |team|
-      if team.team_id == x
+      if team.team_id == x[0]
         
      
         team_name = team.team_name
@@ -402,10 +402,10 @@ module TeamStatistics
       end
 
      else
-        win_percentage = [0]
+        win_percentage = 0.0
         total_opponent_goals = [0]
         total_team_goals = [0]
-      end
+    end
       average_goals_scored = (total_team_goals.sum / total_team_goals.count.to_f).round(2)
       average_goals_against = (total_opponent_goals.sum / total_opponent_goals.count.to_f).round(2)
 
