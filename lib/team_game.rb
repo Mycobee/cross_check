@@ -16,9 +16,10 @@ class TeamGame
               :take_aways
 
   def initialize(team_game_info)
+    
     @game_id = team_game_info[:game_id]
     @team_id = team_game_info[:team_id]
-    @home_or_away = team_game_info[:HoA]
+    @home_or_away = team_game_info[:hoa]
     @won = team_game_info[:won]
     @settled_in = team_game_info[:settled_in]
     @head_coach = team_game_info[:head_coach]

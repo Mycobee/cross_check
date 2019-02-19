@@ -34,7 +34,7 @@ module MockData
   {
     game_id: "2012030221",
     team_id: "3",
-    HoA:"away", 
+    hoa:"away", 
     won: "FALSE",
     settled_in: "OT",
     head_coach: "John Tortorella",

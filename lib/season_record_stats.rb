@@ -52,19 +52,19 @@ module SeasonRecordStats
     end
   end
 
-  def total_season_win_loss(games_by_season)
-    preseason_win_loss = preseason_records(games_by_season)
-    regular_season_win_loss = regular_season_records(games_by_season)
-    regular_season_win_loss.keys.inject({}) do |total_hash, team_id|
-      if preseason_win_loss[team_id]
-        total_season_win_loss = regular_season_win_loss[team_id] + preseason_win_loss[team_id]
-        total_hash[team_id] = total_season_win_loss
-      else
-        total_hash[team_id] = regular_season_win_loss[team_id]
-      end
-      total_hash
-    end
-  end
+  # def total_season_win_loss(games_by_season)
+  #   preseason_win_loss = preseason_records(games_by_season)
+  #   regular_season_win_loss = regular_season_records(games_by_season)
+  #   regular_season_win_loss.keys.inject({}) do |total_hash, team_id|
+  #     if preseason_win_loss[team_id]
+  #       total_season_win_loss = regular_season_win_loss[team_id] + preseason_win_loss[team_id]
+  #       total_hash[team_id] = total_season_win_loss
+  #     else
+  #       total_hash[team_id] = regular_season_win_loss[team_id]
+  #     end
+  #     total_hash
+  #   end
+  # end
 
   def season_record_percentages(season_win_loss)
     season_win_loss.each do |season, win_loss|
