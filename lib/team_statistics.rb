@@ -1,4 +1,3 @@
-require 'pry'
 module TeamStatistics
 
   def find_team(team_id)
@@ -96,7 +95,7 @@ module TeamStatistics
     end
     x = season_result.keys.max_by do |season|
 
-      season_result[season].to_i
+      season_result[season]
     end
   end
 
@@ -127,7 +126,7 @@ module TeamStatistics
       end
     end
     x = season_result.keys.max_by do |season|
-      season_result[season].to_i
+      season_result[season]
     end
   end
 
@@ -217,7 +216,7 @@ module TeamStatistics
       end
     end
     x = team_result.keys.max_by do |team|
-      team_result[team].to_i
+      team_result[team]
     end
     team_name = []
     @league.teams.each do |team|
@@ -274,7 +273,7 @@ module TeamStatistics
       end
     end
     x = team_result.keys.max_by do |team|
-      team_result[team].to_i
+      team_result[team]
     end
     team_name = []
     @league.teams.each do |team|
