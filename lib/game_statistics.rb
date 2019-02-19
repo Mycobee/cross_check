@@ -23,7 +23,7 @@ module GameStatistics
   end
 
   def filter_home_away_wins(string)
-    home_win_games = @league.games.select do |game|
+    @league.games.select do |game|
        game.outcome.include?(string)
     end
 
@@ -38,10 +38,12 @@ module GameStatistics
     (visitor_win_games.count.to_f / @league.games.count).round(2)
   end
 
+  def group_by_season
+    @league.games.group_by {|game| game.season}
+  end
+
   def count_of_games_by_season
-    season_hash = @league.games.group_by do |game|
-      game.season
-    end
+    season_hash = group_by_season
     season_hash.each do |season, games|
       season_hash[season] = games.count
     end
@@ -56,9 +58,7 @@ module GameStatistics
   end
 
   def average_goals_by_season
-    season_hash = @league.games.group_by do |game|
-      game.season
-    end
+    season_hash = group_by_season
     season_hash.each do |season, games|
       total_scores = season_hash[season].map {|game| game.away_goals + game.home_goals}
       season_hash[season] = (total_scores.sum / total_scores.count.to_f).round(2)
