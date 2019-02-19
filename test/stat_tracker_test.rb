@@ -356,7 +356,7 @@ class TrackerTest < Minitest::Test
 
   def test_head_to_head
     actual = @stat_tracker.head_to_head("3")
-    expected = {"Bruins"=>0.2}
+    expected = {"Bruins"=>0.2, "Blues" => 0.0}
     assert_equal expected,  actual
 
   end

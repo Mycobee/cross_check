@@ -13,7 +13,7 @@ module TeamStatistics
       ivar.to_s.delete("@")
     end
     team_info.inject({}) do |hash, key|
-      hash[key.to_sym] = team.instance_variable_get("@#{key}")
+      hash[key] = team.instance_variable_get("@#{key}")
       hash
     end
   end
@@ -136,7 +136,7 @@ module TeamStatistics
     team_wins = winning_games(team_id)
     total_games = all_games_played(team_id)
     avg_win_percentage = (team_wins.count.to_f / total_games.count)
-    avg_win_percentage = (avg_win_percentage * 100).round(2)
+    avg_win_percentage = avg_win_percentage.round(2)
   end
 
   def most_goals_scored(team_id)
