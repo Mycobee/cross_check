@@ -8,8 +8,6 @@ module LeagueDefenseStats
           all_forfeited_goals << game.home_goals
         elsif team.team_id == game.home_team_id
           all_forfeited_goals << game.away_goals
-        else
-          next
         end
       end
       forfeited_count = teams_hash[team.team_id].count
