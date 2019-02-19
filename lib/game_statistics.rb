@@ -1,12 +1,20 @@
 module GameStatistics
+  def sum_method(arg1, arg2)
+    arg1 + arg2
+  end
+
   def highest_total_score
     highest_score_game = @league.games.max_by {|game| (game.away_goals + game.home_goals)}
-    highest_score_game.away_goals + highest_score_game.home_goals
+    high_away = highest_score_game.away_goals
+    high_home = highest_score_game.home_goals
+    sum_method(high_away, high_home)
   end
 
   def lowest_total_score
-   lowest_score_game =   @league.games.min_by {|game| (game.away_goals + game.home_goals)}
-   lowest_score_game.away_goals + lowest_score_game.home_goals
+   lowest_score_game = @league.games.min_by {|game| (game.away_goals + game.home_goals)}
+   low_away = lowest_score_game.away_goals
+   low_home = lowest_score_game.home_goals
+   sum_method(low_away, low_home)
   end
 
   def biggest_blowout
