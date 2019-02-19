@@ -1,5 +1,5 @@
-require './lib/season_record_stats'
-require './lib/league_offense_stats'
+require_relative 'season_record_stats'
+require_relative 'league_offense_stats'
 
 module SeasonStatistics
   include SeasonRecordStats

@@ -1,6 +1,4 @@
-require 'pry'
 module GameStatistics
-
   def highest_total_score
     highest_score_game = @league.games.max_by {|game| (game.away_goals + game.home_goals)}
     highest_score_game.away_goals + highest_score_game.home_goals
@@ -20,14 +18,14 @@ module GameStatistics
     home_win_games = @league.games.select do |game|
        game.outcome.include?("home")
     end
-    ((home_win_games.count.to_f / @league.games.count) * 100).round(2)
+    (home_win_games.count.to_f / @league.games.count).round(2)
   end
 
   def percentage_visitor_wins
     visitor_win_games = @league.games.select do |game|
       game.outcome.include?("away")
     end
-    ((visitor_win_games.count.to_f / @league.games.count) * 100).round(2)
+    (visitor_win_games.count.to_f / @league.games.count).round(2)
   end
 
   def count_of_games_by_season

@@ -1,4 +1,3 @@
-
 module SeasonRecordStats
   def preseason_records(games_by_season)
     preseason_games = games_by_season.select {|game| game.type == "P"}

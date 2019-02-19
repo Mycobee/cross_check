@@ -1,6 +1,6 @@
-require './lib/league_offense_stats'
-require './lib/league_defense_stats'
-require './lib/league_record_stats'
+require_relative 'league_offense_stats'
+require_relative 'league_defense_stats'
+require_relative 'league_record_stats'
 
 module LeagueStatistics
   include LeagueOffenseStats

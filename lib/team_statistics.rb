@@ -1,4 +1,3 @@
-require 'pry'
 module TeamStatistics
 
   def find_team(team_id)
@@ -96,7 +95,7 @@ module TeamStatistics
     end
     x = season_result.keys.max_by do |season|
 
-      season_result[season].to_i
+      season_result[season]
     end
   end
 
@@ -127,7 +126,7 @@ module TeamStatistics
       end
     end
     x = season_result.keys.max_by do |season|
-      season_result[season].to_i
+      season_result[season]
     end
   end
 
@@ -216,12 +215,15 @@ module TeamStatistics
       team_result[team] = scores.sum.to_f / scores.count
       end
     end
+
     x = team_result.max_by do |team, percentage|
       percentage
     end
     team_name = []
     @league.teams.each do |team|
-      if team.team_id == x[0]
+      if team.team_id == x
+        
+     
         team_name = team.team_name
       end
     end
@@ -273,6 +275,7 @@ module TeamStatistics
       team_result[team] = scores.sum.to_f / scores.count
       end
     end
+
     x = team_result.max_by do |team, percentage|
       percentage
     end
