@@ -1,12 +1,20 @@
 module GameStatistics
+  def sum_method(arg1, arg2)
+    arg1 + arg2
+  end
+
   def highest_total_score
     highest_score_game = @league.games.max_by {|game| (game.away_goals + game.home_goals)}
-    highest_score_game.away_goals + highest_score_game.home_goals
+    high_away = highest_score_game.away_goals
+    high_home = highest_score_game.home_goals
+    sum_method(high_away, high_home)
   end
 
   def lowest_total_score
-   lowest_score_game =   @league.games.min_by {|game| (game.away_goals + game.home_goals)}
-   lowest_score_game.away_goals + lowest_score_game.home_goals
+   lowest_score_game = @league.games.min_by {|game| (game.away_goals + game.home_goals)}
+   low_away = lowest_score_game.away_goals
+   low_home = lowest_score_game.home_goals
+   sum_method(low_away, low_home)
   end
 
   def biggest_blowout
@@ -14,24 +22,28 @@ module GameStatistics
     (biggest_blowout.away_goals - biggest_blowout.home_goals).abs
   end
 
-  def percentage_home_wins
-    home_win_games = @league.games.select do |game|
-       game.outcome.include?("home")
+  def filter_home_away_wins(string)
+    @league.games.select do |game|
+       game.outcome.include?(string)
     end
+
+  end
+  def percentage_home_wins
+    home_win_games = filter_home_away_wins("home")
     (home_win_games.count.to_f / @league.games.count).round(2)
   end
 
   def percentage_visitor_wins
-    visitor_win_games = @league.games.select do |game|
-      game.outcome.include?("away")
-    end
+    visitor_win_games = filter_home_away_wins("away")
     (visitor_win_games.count.to_f / @league.games.count).round(2)
   end
 
+  def group_by_season
+    @league.games.group_by {|game| game.season}
+  end
+
   def count_of_games_by_season
-    season_hash = @league.games.group_by do |game|
-      game.season
-    end
+    season_hash = group_by_season
     season_hash.each do |season, games|
       season_hash[season] = games.count
     end
@@ -46,9 +58,7 @@ module GameStatistics
   end
 
   def average_goals_by_season
-    season_hash = @league.games.group_by do |game|
-      game.season
-    end
+    season_hash = group_by_season
     season_hash.each do |season, games|
       total_scores = season_hash[season].map {|game| game.away_goals + game.home_goals}
       season_hash[season] = (total_scores.sum / total_scores.count.to_f).round(2)
