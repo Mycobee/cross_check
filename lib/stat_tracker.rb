@@ -1,4 +1,4 @@
-require_relative './csv'
+require 'csv'
 require_relative './league'
 require_relative './league_statistics'
 require_relative './game_statistics'
