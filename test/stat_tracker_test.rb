@@ -44,12 +44,12 @@ class TrackerTest < Minitest::Test
 
   def test_percentage_home_wins
     actual = @stat_tracker.percentage_home_wins
-    assert_equal 68.09, actual
+    assert_equal 0.68, actual
   end
 
   def test_percentage_visitor_wins
     actual = @stat_tracker.percentage_visitor_wins
-    assert_equal 31.91, actual
+    assert_equal 0.32, actual
   end
 
   def test_count_of_games_by_season

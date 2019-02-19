@@ -22,17 +22,19 @@ module GameStatistics
     (biggest_blowout.away_goals - biggest_blowout.home_goals).abs
   end
 
-  def percentage_home_wins
+  def filter_home_away_wins(string)
     home_win_games = @league.games.select do |game|
-       game.outcome.include?("home")
+       game.outcome.include?(string)
     end
+
+  end
+  def percentage_home_wins
+    home_win_games = filter_home_away_wins("home")
     (home_win_games.count.to_f / @league.games.count).round(2)
   end
 
   def percentage_visitor_wins
-    visitor_win_games = @league.games.select do |game|
-      game.outcome.include?("away")
-    end
+    visitor_win_games = filter_home_away_wins("away")
     (visitor_win_games.count.to_f / @league.games.count).round(2)
   end
 
