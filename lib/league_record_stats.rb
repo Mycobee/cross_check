@@ -1,25 +1,19 @@
 module LeagueRecordStats
-  def away_record(team_id)
-    away_games = @league.games.select do |game|
-      game.away_team_id == team_id
-    end
-    away_games.map do |game|
-      game.outcome.include?("away") ? 1 : 0
-    end
-  end
 
-  def home_record(team_id)
+  def home_away_record(team_id, i_var, string)
     home_games = @league.games.select do |game|
-      game.home_team_id == team_id
+      game.instance_variable_get("@#{i_var}")== team_id
     end
     home_games.map do |game|
-      game.outcome.include?("home") ? 1 : 0
+      game.outcome.include?(string) ? 1 : 0
     end
   end
 
   def total_win_loss_records
     @league.teams.inject({}) do |home_loss_records, team|
-      total_record = away_record(team.team_id) + home_record(team.team_id)
+      home_record = home_away_record(team.team_id, "home_team_id", "home")
+      away_record = home_away_record(team.team_id, "away_team_id", "away")
+      total_record =  home_record + away_record
       if !total_record.count.zero?
         home_loss_records[team.team_id] = total_record
       end
@@ -29,8 +23,8 @@ module LeagueRecordStats
 
   def win_loss_records_overview
     @league.teams.inject({}) do |aggregate_record, team|
-      home_win_loss = home_record(team.team_id)
-      away_win_loss = away_record(team.team_id)
+      home_win_loss = home_away_record(team.team_id, "home_team_id", "home")
+      away_win_loss = home_away_record(team.team_id, "away_team_id", "away")
       aggregate_record[team.team_id] = {}
       if !home_win_loss.length.zero? 
         aggregate_record[team.team_id][:home] = home_win_loss
