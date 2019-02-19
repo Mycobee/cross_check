@@ -216,12 +216,12 @@ module TeamStatistics
       team_result[team] = scores.sum.to_f / scores.count
       end
     end
-    x = team_result.keys.max_by do |team|
-      team_result[team].to_i
+    x = team_result.max_by do |team, percentage|
+      percentage
     end
     team_name = []
     @league.teams.each do |team|
-      if team.team_id == x
+      if team.team_id == x[0]
         team_name = team.team_name
       end
     end
@@ -273,12 +273,13 @@ module TeamStatistics
       team_result[team] = scores.sum.to_f / scores.count
       end
     end
-    x = team_result.keys.max_by do |team|
-      team_result[team].to_i
+    x = team_result.max_by do |team, percentage|
+      percentage
     end
+
     team_name = []
     @league.teams.each do |team|
-      if team.team_id == x
+      if team.team_id == x[0]
         team_name = team.team_name
       end
     end
