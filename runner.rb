@@ -13,6 +13,6 @@ locations = {
 stat_tracker = StatTracker.from_csv(locations)
 stat_tracker.load_csv
 # stat_tracker.average_goals_by_season
-stat_tracker.best_season("3")
+stat_tracker.head_to_head("18")
 
 # require 'pry'; binding.pry

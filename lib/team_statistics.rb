@@ -306,40 +306,59 @@ module TeamStatistics
   end
 
   def head_to_head(team_id)
-    team_games = @league.team_games.group_by {|team_game| team_game.team_id}
-    team_games_ids = @league.team_games.group_by {|team_game| team_game.game_id }
+    #################HELPER METHOD#########################
+    home_game_hash = home_games(team_id).group_by do |game|
+      game.away_team_id
+    end
 
-    game_ids = team_games[team_id].map {|team_game| team_game.game_id}
-    games_arr = []
-    game_ids.each{|game_id| games_arr.concat(team_games_ids[game_id])}
-    opponent_team_games = games_arr.select {|game| game.team_id != team_id}
-    opponent_team_games_groups = opponent_team_games.group_by {|game| game.team_id}
-    opponent_team_games_groups.each do |key, value|
-    win_loss_record =  value.map do |game|
-        if game.won.include?("FALSE")
-            1
-        else
-            0
+    home_game_hash.each do |opponent, games|
+      home_win_loss_array = games.map do |game|
+        game.outcome.include?("home") ? 1 : 0
+      end
+      home_win_loss_array = home_win_loss_array.select {|score| score}
+      home_game_hash[opponent] = home_win_loss_array
+    end
+
+    away_game_hash = away_games(team_id).group_by do |game|
+      game.home_team_id
+    end
+    away_game_hash.each do |opponent, games|
+      away_win_loss_array = games.map do |game|
+        game.outcome.include?("away") ? 1 : 0
+      end
+      away_win_loss_array = away_win_loss_array.select {|score| score}
+      away_game_hash[opponent] = away_win_loss_array
+    end
+
+
+    home_away_win_loss = home_game_hash.keys.inject({}) do |hash, opponent|
+      if home_game_hash[opponent] && away_game_hash[opponent]
+        hash[opponent] = home_game_hash[opponent] + away_game_hash[opponent]
+      elsif home_game_hash[opponent]
+        hash[opponent] = home_game_hash[opponent]
+      else hash[opponent] = away_game_hash[opponent]
+      end
+      hash
+    end
+
+    team_result = {}
+    home_away_win_loss.each do |team, scores|
+      if scores.count == 0
+        next
+      else
+      team_result[team] = (scores.sum.to_f / scores.count).round(2)
+      end
+    end
+    #################HELPER METHOD#########################
+    head_to_head = {}
+    @league.teams.each do |team|
+      team_result.each do |team_id, percentage|
+        if team_id == team.team_id
+          head_to_head[team.team_name] = percentage
         end
+      end
     end
-    win_percentage = (win_loss_record.sum / win_loss_record.length.to_f).round(2)
-    opponent_team_games_groups[key] = win_percentage
-
-    end
-
-    id_name_hash =  @league.teams.inject({}) do |team_name_hash, team|
-      team_name_hash[team.team_id] = team.team_name
-      team_name_hash
-    end
-
-
-    opponent_team_games_groups.keys.inject({}) do |name_percent_hash, team_id|
-      name_percent_hash[id_name_hash[team_id]] = opponent_team_games_groups[team_id]
-      name_percent_hash
-    end
-
-
-
+    head_to_head
   end
 
   def seasonal_summary(team_id)
