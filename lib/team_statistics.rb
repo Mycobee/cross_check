@@ -306,9 +306,136 @@ module TeamStatistics
   end
 
   def head_to_head(team_id)
+    team_games = @league.team_games.group_by {|team_game| team_game.team_id}
+    team_games_ids = @league.team_games.group_by {|team_game| team_game.game_id }
+
+    game_ids = team_games[team_id].map {|team_game| team_game.game_id}
+    games_arr = []
+    game_ids.each{|game_id| games_arr.concat(team_games_ids[game_id])}
+    opponent_team_games = games_arr.select {|game| game.team_id != team_id}
+    opponent_team_games_groups = opponent_team_games.group_by {|game| game.team_id}
+    opponent_team_games_groups.each do |key, value|
+    win_loss_record =  value.map do |game|
+        if game.won.include?("FALSE")
+            1
+        else
+            0
+        end
+    end
+    win_percentage = (win_loss_record.sum / win_loss_record.length.to_f).round(2)
+    opponent_team_games_groups[key] = win_percentage
+
+    end
+
+    id_name_hash =  @league.teams.inject({}) do |team_name_hash, team|
+      team_name_hash[team.team_id] = team.team_name
+      team_name_hash
+    end
+
+
+    opponent_team_games_groups.keys.inject({}) do |name_percent_hash, team_id|
+      name_percent_hash[id_name_hash[team_id]] = opponent_team_games_groups[team_id]
+      name_percent_hash
+    end
+
+
+
   end
 
   def seasonal_summary(team_id)
+  games_by_team =  @league.games.select {|game| game.away_team_id == team_id || game.home_team_id == team_id}
+  season_games = games_by_team.group_by {|game| game.season}
+
+  season_games.each do |key, value|
+    season_games[key] = value.group_by {|game| game.type == "P" ? :preseason : :regular_season}
   end
+
+   season_games.each do |season, games|
+     if games[:preseason]
+       win_loss_count = games[:preseason].map do |game|
+
+       if game.away_team_id == team_id
+          game.outcome.include?("away") ? 1 : 0
+       else
+         game.outcome.include?("home") ? 1 : 0
+       end
+     end
+      win_percentage = (win_loss_count.sum / win_loss_count.count.to_f).round(2)
+
+      total_team_goals = games[:preseason].map do |game|
+        if game.away_team_id == team_id
+           game.away_goals
+        else
+          game.home_goals
+        end
+      end
+
+      total_opponent_goals = games[:preseason].map do |game|
+        if game.away_team_id != team_id
+           game.away_goals
+        else
+          game.home_goals
+        end
+      end
+
+     else
+        win_percentage = [0]
+        total_opponent_goals = [0]
+        total_team_goals = [0]
+      end
+      average_goals_scored = (total_team_goals.sum / total_team_goals.count.to_f).round(2)
+      average_goals_against = (total_opponent_goals.sum / total_opponent_goals.count.to_f).round(2)
+
+    season_games[season][:preseason] =
+      {
+      :win_percentage => win_percentage,
+      :total_goals_scored => total_team_goals.sum,
+      :total_goals_against => total_opponent_goals.sum,
+      :average_goals_scored => average_goals_scored,
+      :average_goals_against => average_goals_against
+      }
+
+        win_loss_count = games[:regular_season].map do |game|
+
+        if game.away_team_id == team_id
+           game.outcome.include?("away") ? 1 : 0
+        else
+          game.outcome.include?("home") ? 1 : 0
+        end
+      end
+       win_percentage = (win_loss_count.sum / win_loss_count.count.to_f).round(2)
+
+       total_team_goals = games[:regular_season].map do |game|
+         if game.away_team_id == team_id
+            game.away_goals
+         else
+           game.home_goals
+         end
+       end
+
+       total_opponent_goals = games[:regular_season].map do |game|
+         if game.away_team_id != team_id
+            game.away_goals
+         else
+           game.home_goals
+         end
+       end
+
+       average_goals_scored = (total_team_goals.sum / total_team_goals.count.to_f).round(2)
+       average_goals_against = (total_opponent_goals.sum / total_opponent_goals.count.to_f).round(2)
+
+       season_games[season][:regular_season] =
+         {
+         :win_percentage => win_percentage,
+         :total_goals_scored => total_team_goals.sum,
+         :total_goals_against => total_opponent_goals.sum,
+         :average_goals_scored => average_goals_scored,
+         :average_goals_against => average_goals_against
+         }
+
+    end
+      # require 'pry'; binding.pry
+   end
+
 
 end
