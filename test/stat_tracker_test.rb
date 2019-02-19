@@ -318,25 +318,12 @@ class TrackerTest < Minitest::Test
   end
 
   def test_favorite_opponent
-
-    locations = {
-      games: './data/mocks/mock_game_2.csv',
-      teams: './data/mocks/mock_team_info.csv',
-      game_teams: './data/mocks/mock_game_teams_stats.csv',
-    }
-
     actual = @stat_tracker.favorite_opponent("3")
 
     assert_equal "Bruins", actual
   end
 
   def test_rival
-    locations = {
-      games: './data/mocks/mock_game_2.csv',
-      teams: './data/mocks/mock_team_info.csv',
-      game_teams: './data/mocks/mock_game_teams_stats.csv',
-    }
-
     actual = @stat_tracker.rival("3")
 
     assert_equal "Blues", actual
