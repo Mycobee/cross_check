@@ -1,10 +1,8 @@
+require_relative 'team_statistics_helper'
 module TeamStatistics
+  include TeamStatisticsHelper
 
-  def find_team(team_id)
-    @league.teams.find do |team|
-      team.team_id == team_id
-    end
-  end
+
 
   def team_info(team_id)
     team = find_team(team_id)
@@ -48,19 +46,6 @@ module TeamStatistics
     @league.games.select do |game|
       game.home_team_id == team_id && game.outcome.include?("away") ||
       game.away_team_id == team_id && game.outcome.include?("home")
-    end
-  end
-
-  def winning_home_games(team_id)
-    @league.games.select do |game|
-      game.home_team_id == team_id && game.outcome.include?("home")
-    end
-  end
-
-  def winning_away_games(team_id)
-    @league.games.select do |game|
-      game.away_team_id == team_id && game.outcome.include?("away")
-
     end
   end
 
@@ -222,8 +207,8 @@ module TeamStatistics
     team_name = []
     @league.teams.each do |team|
       if team.team_id == x[0]
-        
-     
+
+
         team_name = team.team_name
       end
     end
