@@ -79,23 +79,23 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_overview_of_each_teams_total_goals
     expected = {
-      "26"=>[1, 1, 3, 1, 4, 2, 3], 
-      "14"=>[5, 3], 
-      "6"=>[2, 3, 3, 6, 3, 5, 3, 2, 1, 4], 
-      "3"=>[2, 2, 1, 1, 4, 1], 
-      "5"=>[1, 0, 0, 0, 1], 
-      "17"=>[1, 4, 1, 1, 1, 0, 3, 2, 3, 0], 
-      "18"=>[4], "23"=>[3], 
-      "16"=>[1, 0, 4, 2, 3, 5, 4, 1, 4, 2, 2, 5, 5], 
-      "9"=>[4, 1, 6, 6, 3, 5], 
-      "8"=>[1, 2, 2, 3, 1, 2], 
-      "30"=>[1, 2, 1, 0, 0, 6, 3, 0], 
-      "19"=>[0, 3, 1, 2, 2, 2, 2, 6, 2], 
-      "24"=>[4, 3], 
-      "2"=>[2, 2, 0], 
-      "20"=>[5], 
-      "25"=>[1, 2], 
-      "29"=>[4], 
+      "26"=>[1, 1, 3, 1, 4, 2, 3],
+      "14"=>[5, 3],
+      "6"=>[2, 3, 3, 6, 3, 5, 3, 2, 1, 4],
+      "3"=>[2, 2, 1, 1, 4, 1],
+      "5"=>[1, 0, 0, 0, 1],
+      "17"=>[1, 4, 1, 1, 1, 0, 3, 2, 3, 0],
+      "18"=>[4], "23"=>[3],
+      "16"=>[1, 0, 4, 2, 3, 5, 4, 1, 4, 2, 2, 5, 5],
+      "9"=>[4, 1, 6, 6, 3, 5],
+      "8"=>[1, 2, 2, 3, 1, 2],
+      "30"=>[1, 2, 1, 0, 0, 6, 3, 0],
+      "19"=>[0, 3, 1, 2, 2, 2, 2, 6, 2],
+      "24"=>[4, 3],
+      "2"=>[2, 2, 0],
+      "20"=>[5],
+      "25"=>[1, 2],
+      "29"=>[4],
       "12"=>[0]
     }
     actual = @stat_tracker.total_goals_made_by_team
@@ -114,24 +114,24 @@ class TrackerTest < Minitest::Test
 
   def test_it_provides_an_overview_of_each_teams_forfeited_goals
     expected = {
-      "26"=>[2, 2, 0, 3, 2, 1, 0], 
-      "14"=>[0, 2], 
-      "6"=>[2, 2, 1, 4, 1, 0, 1, 1, 0, 2], 
-      "3"=>[3, 5, 2, 3, 3, 2], 
-      "5"=>[3, 6, 2, 1, 5], 
-      "17"=>[4, 1, 1, 0, 4, 4, 2, 3, 4, 6], 
-      "18"=>[5], 
-      "23"=>[2], 
-      "16"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1, 2], 
-      "9"=>[2, 3, 1, 2, 1, 0], 
-      "8"=>[4, 1, 6, 3, 6, 1], 
-      "30"=>[2, 5, 2, 3, 5, 3, 4, 0], 
-      "19"=>[1, 1, 1, 4, 3, 2, 0, 1, 3], 
-      "24"=>[1, 0], 
-      "2"=>[4, 3, 6], 
-      "20"=>[4], 
-      "25"=>[2, 5], 
-      "29"=>[0], 
+      "26"=>[2, 2, 0, 3, 2, 1, 0],
+      "14"=>[0, 2],
+      "6"=>[2, 2, 1, 4, 1, 0, 1, 1, 0, 2],
+      "3"=>[3, 5, 2, 3, 3, 2],
+      "5"=>[3, 6, 2, 1, 5],
+      "17"=>[4, 1, 1, 0, 4, 4, 2, 3, 4, 6],
+      "18"=>[5],
+      "23"=>[2],
+      "16"=>[1, 4, 3, 2, 1, 3, 1, 1, 2, 3, 0, 1, 2],
+      "9"=>[2, 3, 1, 2, 1, 0],
+      "8"=>[4, 1, 6, 3, 6, 1],
+      "30"=>[2, 5, 2, 3, 5, 3, 4, 0],
+      "19"=>[1, 1, 1, 4, 3, 2, 0, 1, 3],
+      "24"=>[1, 0],
+      "2"=>[4, 3, 6],
+      "20"=>[4],
+      "25"=>[2, 5],
+      "29"=>[0],
       "12"=>[5]
     }
     actual = @stat_tracker.total_goals_forfeited_by_team
@@ -186,7 +186,7 @@ class TrackerTest < Minitest::Test
     }
     stat_tracker = StatTracker.from_csv(locations)
     actual = stat_tracker.worst_fans
-    assert_equal [], actual
+    assert_equal ["1", "5", "15", "24", "29", "22"], actual
   end
   ###########################################
 
@@ -232,46 +232,43 @@ class TrackerTest < Minitest::Test
 
   end
 
-  def test_least_accurate_team
-    locations = {
-      games: './data/mocks/mock_game_2.csv',
-      teams: './data/mocks/mock_team_info.csv',
-      game_teams: './data/mocks/mock_game_teams_stats.csv',
-    }
-    stat_tracker = StatTracker.from_csv(locations)
-  end
-
   def test_most_hits
-    skip
-    locations = {
-      games: './data/mocks/mock_game_2.csv',
-      teams: './data/mocks/mock_team_info.csv',
-      game_teams: './data/mocks/mock_game_teams_stats.csv',
-    }
-    stat_tracker = StatTracker.from_csv(locations)
+
+    assert_equal "Blackhawks", @stat_tracker.most_hits('20122013')
   end
 
   def test_least_hits
-    skip
-    locations = {
-      games: './data/mocks/mock_game_2.csv',
-      teams: './data/mocks/mock_team_info.csv',
-      game_teams: './data/mocks/mock_game_teams_stats.csv',
-    }
-    stat_tracker = StatTracker.from_csv(locations)
+    assert_equal "Ducks", @stat_tracker.least_hits('20122013')
   end
 
   def test_power_play_goal_percentage
-    skip
-    locations = {
-      games: './data/mocks/mock_game_2.csv',
-      teams: './data/mocks/mock_team_info.csv',
-      game_teams: './data/mocks/mock_game_teams_stats.csv',
-    }
-    stat_tracker = StatTracker.from_csv(locations)
-
+    assert_equal 0.2, @stat_tracker.power_play_goal_percentage('20122013')
   end
 
+  # def test_total_season_win_loss
+  #   assert_equal  , stat_tracker.total_season_win_loss("20122013")
+  # end
+
+  def test_hits_records
+    expected = {
+                "3"=>179,
+                "6"=>271,
+                "5"=>150,
+                "17"=>259,
+                "16"=>299,
+                "9"=>181,
+                "8"=>173,
+                "30"=>165,
+                "26"=>241,
+                "19"=>238,
+                "24"=>61
+                }
+    assert_equal expected, @stat_tracker.hits_records('20122013')
+  end
+
+  def test_least_accurate_team
+    assert_equal "Penguins", @stat_tracker.least_accurate_team('20122013')
+  end
   ###########################################
   #######Iteration 4 ########################
 
@@ -358,17 +355,33 @@ class TrackerTest < Minitest::Test
   end
 
   def test_head_to_head
-    skip
-    actual = @stat_tracker.head_to_head
-    assert_equal #{}, actual
+    actual = @stat_tracker.head_to_head("3")
+    expected = {"Bruins"=>0.2}
+    assert_equal expected,  actual
 
   end
 
   def test_seasonal_summary
-    skip
-    actual = @stat_tracker.seasonal_summary
-    assert_equal #{}, actual
-
+    actual = @stat_tracker.seasonal_summary("6")
+    expected = {
+                "20122013"=>{
+                  :preseason=>{
+                    :win_percentage=>0.89,
+                       :total_goals_scored=>28,
+                       :total_goals_against=>12,
+                       :average_goals_scored=>3.11,
+                       :average_goals_against=>1.33
+                  },
+                  :regular_season=>{
+                    :win_percentage=>1.0,
+                        :total_goals_scored=>4,
+                        :total_goals_against=>2,
+                        :average_goals_scored=>4.0,
+                        :average_goals_against=>2.0
+                   }
+                 }
+               }
+    assert_equal expected, actual
   end
 
 end
