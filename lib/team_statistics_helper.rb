@@ -39,6 +39,17 @@ module TeamStatisticsHelper
     end
   end
 
+  def parse_by_season_type(season_games)
+    season_games.each do |key, value|
+      season_games[key] = value.group_by {|game| game.type == "P" ? :preseason : :regular_season}
+    end
+  end
+
+  def games_group_by_team(team_id)
+    games_by_team = all_games_played(team_id) # line 9
+    games_by_team.group_by {|game| game.season} # 
+  end
+
   def home_or_away_games_group_by_category(team_id, i_var1, i_var2)
     home_or_away_games(team_id, i_var1).group_by do |game|
       game.send(i_var2.to_sym)
@@ -81,9 +92,13 @@ module TeamStatisticsHelper
     end
   end
 
+  def calculate_team_win_percentage(win_loss_count)
+    (win_loss_count.sum / win_loss_count.count.to_f).round(2)
+  end
+
   def team_id_to_team_name(team_id)
-      @league.teams.find {|team| team.team_id == team_id}.team_name
-    end
+    @league.teams.find {|team| team.team_id == team_id}.team_name
+  end
 
   def combine_home_away_win_loss_results(home_game_hash, away_game_hash)
     home_game_hash.keys.inject({}) do |hash, opponent|
@@ -104,4 +119,29 @@ module TeamStatisticsHelper
     end
   end
 
+  def own_opponent_goals_by_season_type(games, team_id, season_type, i_var_arr)
+    games[season_type].map do |game|
+      game.away_team_id == team_id ? game.send(i_var_arr[0]) : game.send(i_var_arr[1])
+    end
+  end
+
+  def create_regular_preseason_hash(season_games, season_id, season_type, stat_info)
+    season_games[season_id][season_type] = {
+      :win_percentage => stat_info[0],
+      :total_goals_scored => stat_info[1],
+      :total_goals_against => stat_info[2],
+      :average_goals_scored => stat_info[3],
+      :average_goals_against => stat_info[4]
+    }
+  end
+
+  def create_preseason_info(games, team_id)
+    win_loss_count = games[:preseason].map do |game|
+      conditional_setting_of_win_loss(game, team_id, "home", "away")
+    end
+    win_percentage = calculate_team_win_percentage(win_loss_count)
+    total_team_goals = own_opponent_goals_by_season_type(games, team_id, :preseason, [:away_goals, :home_goals])
+    total_opponent_goals = own_opponent_goals_by_season_type(games, team_id, :preseason, [:home_goals, :away_goals])
+    [win_percentage, total_team_goals.sum, total_opponent_goals.sum]
+  end
 end
