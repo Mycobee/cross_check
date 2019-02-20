@@ -27,7 +27,7 @@ module LeagueStatistics
   def worst_offense
     team_goals = total_goals_made_by_team # from LeagueOffenseStats
     worst_offensive_id = team_goals.keys.min_by do |team_id|
-      calculate_percentage(team_goals, team_id)     
+      calculate_percentage(team_goals, team_id)
     end
     find_team_name(worst_offensive_id)
   end
@@ -99,7 +99,7 @@ module LeagueStatistics
       away_record = all_records[record][:away]
       home_ratio = home_record.sum / home_record.count.to_f
       away_ratio = away_record.sum / away_record.count.to_f
-      home_ratio - away_ratio  
+      home_ratio - away_ratio
     end
     find_team_name(best_fans_by_id)
   end

@@ -63,4 +63,45 @@ module TeamStatisticsHelper
     end
   end
 
+  def determine_win_or_loss_percentage_per_season(season_hash)
+    season_result = {}
+    season_hash.each do |season, scores|
+      if scores.count == 0
+        next
+      else
+      season_result[season] = scores.sum.to_f / scores.count
+      end
+    end
+    season_result
+  end
+
+  def determine_best_win_or_loss_percentage(result_hash)
+    result_hash.keys.max_by do |team|
+      result_hash[team]
+    end
+  end
+
+  def team_id_to_team_name(team_id)
+      @league.teams.find {|team| team.team_id == team_id}.team_name
+    end
+
+  def combine_home_away_win_loss_results(home_game_hash, away_game_hash)
+    home_game_hash.keys.inject({}) do |hash, opponent|
+      if home_game_hash[opponent] && away_game_hash[opponent]
+        hash[opponent] = home_game_hash[opponent] + away_game_hash[opponent]
+      elsif home_game_hash[opponent]
+        hash[opponent] = home_game_hash[opponent]
+      else hash[opponent] = away_game_hash[opponent]
+      end
+      hash
+    end
+  end
+
+  def team_id_name_hash
+    @league.teams.inject({}) do |team_hash, team|
+      team_hash[team.team_id] = team.team_name
+      team_hash
+    end
+  end
+
 end

@@ -22,17 +22,8 @@ module TeamStatistics
       home_away_win_loss_array = home_away_win_loss_array.select {|score| score}
       season_hash[season] = home_away_win_loss_array
     end
-    season_result = {}
-    season_hash.each do |season, scores|
-      if scores.count == 0
-        next
-      else
-      season_result[season] = scores.sum.to_f / scores.count
-      end
-    end
-    x = season_result.keys.max_by do |season|
-      season_result[season]
-    end
+    season_result = determine_win_or_loss_percentage_per_season(season_hash)
+    determine_best_win_or_loss_percentage(season_result)
   end
 
   def worst_season(team_id)
@@ -44,17 +35,8 @@ module TeamStatistics
       home_away_win_loss_array = home_away_win_loss_array.select {|score| score}
       season_hash[season] = home_away_win_loss_array
     end
-    season_result = {}
-    season_hash.each do |season, scores|
-      if scores.count == 0
-        next
-      else
-      season_result[season] = scores.sum.to_f / scores.count
-      end
-    end
-    x = season_result.keys.max_by do |season|
-      season_result[season]
-    end
+    season_result = determine_win_or_loss_percentage_per_season(season_hash)
+    determine_best_win_or_loss_percentage(season_result)
   end
 
 
@@ -69,32 +51,25 @@ module TeamStatistics
     highest_home_game = home_or_away_games(team_id, "home_team_id").max_by do |game|
       game.home_goals
     end
-
     highest_away_game = home_or_away_games(team_id, "away_team_id").max_by do |game|
       game.away_goals
     end
-
     if highest_home_game.home_goals > highest_away_game.away_goals
       highest_home_game.home_goals
     else highest_away_game.away_goals
-
     end
-
   end
 
   def fewest_goals_scored(team_id)
     lowest_home_game = home_or_away_games(team_id, "home_team_id").min_by do |game|
       game.home_goals
     end
-
     lowest_away_game = home_or_away_games(team_id, "away_team_id").min_by do |game|
       game.away_goals
     end
-
     if lowest_home_game.home_goals < lowest_away_game.away_goals
       lowest_home_game.home_goals
     else lowest_away_game.away_goals
-
     end
   end
 
@@ -103,39 +78,10 @@ module TeamStatistics
     away_game_hash = home_or_away_games_group_by_category(team_id, "away_team_id", "home_team_id")
     setting_win_loss_as_1_or_0(home_game_hash, "home")
     setting_win_loss_as_1_or_0(away_game_hash, "away")
-    home_away_win_loss = home_game_hash.keys.inject({}) do |hash, opponent|
-      if home_game_hash[opponent] && away_game_hash[opponent]
-        hash[opponent] = home_game_hash[opponent] + away_game_hash[opponent]
-      elsif home_game_hash[opponent]
-        hash[opponent] = home_game_hash[opponent]
-      else hash[opponent] = away_game_hash[opponent]
-      end
-      hash
-    end
-
-    team_result = {}
-    home_away_win_loss.each do |team, scores|
-      if scores.count == 0
-        next
-      else
-      team_result[team] = scores.sum.to_f / scores.count
-      end
-    end
-
-    x = team_result.max_by do |team, percentage|
-      percentage
-    end
-    team_name = []
-    @league.teams.each do |team|
-      if team.team_id == x[0]
-
-
-        team_name = team.team_name
-      end
-    end
-    return team_name
-
-
+    home_away_win_loss = combine_home_away_win_loss_results(home_game_hash, away_game_hash)
+    team_result = determine_win_or_loss_percentage_per_season(home_away_win_loss)
+    team_percentage_pair = determine_best_win_or_loss_percentage(team_result)
+    team_id_to_team_name(team_percentage_pair)
   end
 
   def rival(team_id)
@@ -143,94 +89,42 @@ module TeamStatistics
     away_game_hash = home_or_away_games_group_by_category(team_id, "away_team_id", "home_team_id")
     setting_win_loss_as_1_or_0(home_game_hash, "away")
     setting_win_loss_as_1_or_0(away_game_hash, "home")
-    home_away_win_loss = home_game_hash.keys.inject({}) do |hash, opponent|
-      if home_game_hash[opponent] && away_game_hash[opponent]
-        hash[opponent] = home_game_hash[opponent] + away_game_hash[opponent]
-      elsif home_game_hash[opponent]
-        hash[opponent] = home_game_hash[opponent]
-      else hash[opponent] = away_game_hash[opponent]
-      end
-      hash
-    end
-
-    team_result = {}
-    home_away_win_loss.each do |team, scores|
-      if scores.count == 0
-        next
-      else
-      team_result[team] = scores.sum.to_f / scores.count
-      end
-    end
-
-    x = team_result.max_by do |team, percentage|
-      percentage
-    end
-
-    team_name = []
-    @league.teams.each do |team|
-      if team.team_id == x[0]
-        team_name = team.team_name
-      end
-    end
-    return team_name
+    home_away_win_loss = combine_home_away_win_loss_results(home_game_hash, away_game_hash)
+    team_result = determine_win_or_loss_percentage_per_season(home_away_win_loss)
+    team_percentage_pair = determine_best_win_or_loss_percentage(team_result)
+    team_id_to_team_name(team_percentage_pair)
   end
+
 
   def biggest_team_blowout(team_id)
     team_wins = winning_games(team_id)
-
     biggest_blowout_game = team_wins.max_by do |game|
       (game.home_goals - game.away_goals).abs
     end
     (biggest_blowout_game.home_goals - biggest_blowout_game.away_goals).abs
-
   end
 
   def worst_loss(team_id)
     team_losses = losing_games(team_id)
-
     worst_loss_game = team_losses.max_by do |game|
       (game.home_goals - game.away_goals).abs
     end
     (worst_loss_game.home_goals - worst_loss_game.away_goals).abs
-
   end
 
   def head_to_head(team_id)
-    #################HELPER METHOD#########################
     home_game_hash = home_or_away_games_group_by_category(team_id, "home_team_id", "away_team_id")
     away_game_hash = home_or_away_games_group_by_category(team_id, "away_team_id", "home_team_id")
     setting_win_loss_as_1_or_0(home_game_hash, "home")
     setting_win_loss_as_1_or_0(away_game_hash, "away")
-
-    home_away_win_loss = home_game_hash.keys.inject({}) do |hash, opponent|
-      if home_game_hash[opponent] && away_game_hash[opponent]
-        hash[opponent] = home_game_hash[opponent] + away_game_hash[opponent]
-      elsif home_game_hash[opponent]
-        hash[opponent] = home_game_hash[opponent]
-      else hash[opponent] = away_game_hash[opponent]
-      end
-      hash
-    end
-
-    team_result = {}
-    home_away_win_loss.each do |team, scores|
-      if scores.count == 0
-        next
-      else
-      team_result[team] = (scores.sum.to_f / scores.count).round(2)
-      end
-    end
-    #################HELPER METHOD#########################
+    home_away_win_loss = combine_home_away_win_loss_results(home_game_hash, away_game_hash)
+    team_result = determine_win_or_loss_percentage_per_season(home_away_win_loss)
     head_to_head = {}
-    @league.teams.each do |team|
-      team_result.each do |team_id, percentage|
-        if team_id == team.team_id
-          head_to_head[team.team_name] = percentage
-        end
-      end
+    team_result.each do |team_id, percentage|
+      head_to_head[team_id_name_hash[team_id]] = percentage
     end
     head_to_head
-  end
+    end
 
   def seasonal_summary(team_id)
   games_by_team =  @league.games.select {|game| game.away_team_id == team_id || game.home_team_id == team_id}
