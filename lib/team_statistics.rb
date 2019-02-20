@@ -130,28 +130,18 @@ module TeamStatistics
     parse_by_season_type(season_games)
     season_games.each do |season, games|
       if games[:preseason]
-        win_loss_count = games[:preseason].map do |game|
-          conditional_setting_of_win_loss(game, team_id, "home", "away")
-        end
-        win_percentage = calculate_team_win_percentage(win_loss_count)
-        total_team_goals = own_opponent_goals_by_season_type(games, team_id, :preseason, [:away_goals, :home_goals])
-        total_opponent_goals = own_opponent_goals_by_season_type(games, team_id, :preseason, [:home_goals, :away_goals])
+        non_avg_stat_info = create_preseason_info(games, team_id, :preseason)
       else
-        win_percentage, total_opponent_goals, total_team_goals = 0.0, [0], [0]
+        non_avg_stat_info = [0.0, [0], [0]]
       end
-      average_goals_scored = calculate_team_win_percentage(total_team_goals)
-      average_goals_against = calculate_team_win_percentage(total_opponent_goals)
-      stat_info = [win_percentage, total_team_goals.sum, total_opponent_goals.sum, average_goals_scored, average_goals_against]
+      average_goals_scored = calculate_team_win_percentage(non_avg_stat_info[1])
+      average_goals_against = calculate_team_win_percentage(non_avg_stat_info[2])
+      stat_info = non_avg_stat_info.concat([average_goals_scored, average_goals_against])
       create_regular_preseason_hash(season_games, season, :preseason, stat_info)
-      win_loss_count = games[:regular_season].map do |game|
-        conditional_setting_of_win_loss(game, team_id, "home", "away")
-      end
-      win_percentage = calculate_team_win_percentage(win_loss_count)
-      total_team_goals = own_opponent_goals_by_season_type(games, team_id, :regular_season, [:away_goals, :home_goals])
-      total_opponent_goals = own_opponent_goals_by_season_type(games, team_id, :regular_season, [:home_goals, :away_goals])
-      average_goals_scored = (total_team_goals.sum / total_team_goals.count.to_f).round(2)
-      average_goals_against = (total_opponent_goals.sum / total_opponent_goals.count.to_f).round(2)
-      stat_info = [win_percentage, total_team_goals.sum, total_opponent_goals.sum, average_goals_scored, average_goals_against]    
+      non_avg_stat_info = create_preseason_info(games, team_id, :regular_season)
+      average_goals_scored = calculate_team_win_percentage(non_avg_stat_info[1])
+      average_goals_against = calculate_team_win_percentage(non_avg_stat_info[2])
+      stat_info = non_avg_stat_info.concat([average_goals_scored, average_goals_against])    
       create_regular_preseason_hash(season_games, season, :regular_season, stat_info)
     end
   end

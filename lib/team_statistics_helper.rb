@@ -80,7 +80,7 @@ module TeamStatisticsHelper
       if scores.count == 0
         next
       else
-      season_result[season] = scores.sum.to_f / scores.count
+      season_result[season] = (scores.sum.to_f / scores.count).round(2)
       end
     end
     season_result
@@ -128,20 +128,20 @@ module TeamStatisticsHelper
   def create_regular_preseason_hash(season_games, season_id, season_type, stat_info)
     season_games[season_id][season_type] = {
       :win_percentage => stat_info[0],
-      :total_goals_scored => stat_info[1],
-      :total_goals_against => stat_info[2],
+      :total_goals_scored => stat_info[1].sum,
+      :total_goals_against => stat_info[2].sum,
       :average_goals_scored => stat_info[3],
       :average_goals_against => stat_info[4]
     }
   end
 
-  def create_preseason_info(games, team_id)
-    win_loss_count = games[:preseason].map do |game|
+  def create_preseason_info(games, team_id, season_type)
+    win_loss_count = games[season_type].map do |game|
       conditional_setting_of_win_loss(game, team_id, "home", "away")
     end
     win_percentage = calculate_team_win_percentage(win_loss_count)
-    total_team_goals = own_opponent_goals_by_season_type(games, team_id, :preseason, [:away_goals, :home_goals])
-    total_opponent_goals = own_opponent_goals_by_season_type(games, team_id, :preseason, [:home_goals, :away_goals])
-    [win_percentage, total_team_goals.sum, total_opponent_goals.sum]
+    total_team_goals = own_opponent_goals_by_season_type(games, team_id, season_type, [:away_goals, :home_goals])
+    total_opponent_goals = own_opponent_goals_by_season_type(games, team_id, season_type, [:home_goals, :away_goals])
+    [win_percentage, total_team_goals, total_opponent_goals]
   end
 end
